@@ -456,7 +456,6 @@ Window:AddToggle({
 	Value = false,
 	Flag = "click_enabled",
 	Callback = function(value)
-		value = false
 		Enableds.Click = value
 		HandleClick()
 	end
@@ -478,7 +477,6 @@ HitToggle = Window:AddToggle({
 	Value = false,
 	Flag = "hit_enabled",
 	Callback = function(value)
-		value = false
 		Enableds.Hit = value
 		HandleHit()
 	end
@@ -489,7 +487,6 @@ CashToggle = Window:AddToggle({
 	Value = false,
 	Flag = "cash_enabled",
 	Callback = function(value)
-		value = false
 		Enableds.Cash = value
 		HandleCash()
 	end
@@ -500,7 +497,6 @@ Window:AddToggle({
 	Value = false,
 	Flag = "equip_best_fish_enabled",
 	Callback = function(value)
-        value = false
 		Enableds.EquipBestFish = value
 		HandleEquipBestFish()
 	end
@@ -511,21 +507,16 @@ Window:AddToggle({
 	Value = false,
 	Flag = "rebirth_enabled",
 	Callback = function(value)
-		value = false
 		Enableds.Rebirth = value
 		HandleRebirth()
 	end
 })
-
-Window:AddLabel({ Text = "+ More Feature", TextColor3 = Color3.fromRGB(255, 255, 255) })
-if true then return end
 
 Window:AddToggle({
 	Text = "Auto Sell",
 	Value = false,
 	Flag = "sell_enabled",
 	Callback = function(value)
-        value = false
 		Enableds.Sell = value
 		HandleSell()
 	end
@@ -550,7 +541,6 @@ Window:AddToggle({
 	Value = false,
 	Flag = "upgrade_enabled",
 	Callback = function(value)
-		value = false
 		Enableds.Upgrade = value
 		HandleUpgrade()
 	end
