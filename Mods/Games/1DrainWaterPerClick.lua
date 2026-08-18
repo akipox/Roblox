@@ -1,18 +1,13 @@
 -- This is what the script looks like from Tora IsMe.
 -- This is a script I made myself. I DO NOT STEAL SCRIPT because i can't read script on Tora IsMe
 
--- ============================================================================== --
--- =============================== DEPENDENCIES ================================= --
--- ============================================================================== --
+---------------------------------- [DEPENDENCIES] ----------------------------------
 local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Crokier/Roblox/main/Packages/Sampluy/init.luau"))()
-
 local Services = setmetatable({}, {__index = function(_, i) return cloneref and cloneref(game:GetService(i)) or game:GetService(i) end})
 local Players = Services.Players
 local ReplicatedStorage = Services.ReplicatedStorage
 
--- ============================================================================== --
--- ================================= VARIABLES ================================== --
--- ============================================================================== --
+---------------------------------- [VARIABLES] ----------------------------------
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
@@ -50,10 +45,7 @@ local CashToggle = nil
 
 local MaxLevel = 0
 
--- ============================================================================== --
--- =============================== INITIALIZATION =============================== --
--- ============================================================================== --
-
+---------------------------------- [INITIALIZATION] ----------------------------------
 -- Track Player Data
 if StageValue and (StageValue:IsA("NumberValue") or StageValue:IsA("IntValue")) then
 	ProfileData.Stage = StageValue.Value
@@ -71,6 +63,7 @@ end
 
 local LevelTarget = ProfileData.Stage or 1
 
+-- Track Character
 Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
 	Character = newCharacter
 end)
@@ -150,10 +143,7 @@ for _, v1 in ipairs(workspace:GetChildren()) do
 	end
 end
 
--- ============================================================================== --
--- ============================== UTILITY FUNCTIONS ============================= --
--- ============================================================================== --
-
+---------------------------------- [UTILITY] ----------------------------------
 local function FirePrompt(prompt)
 	if fireproximityprompt then
 		fireproximityprompt(prompt, 0)
@@ -198,8 +188,6 @@ local function GetPlot()
 	return nil
 end
 
-local Plot = GetPlot()
-
 local function SuperPivoTo(model, p1, p2, height)
 	local orientation = p2.Orientation
 	local extraHeight = (p1.Size.Y / 2) + (p2.Size.Y / 2) + height
@@ -208,15 +196,13 @@ local function SuperPivoTo(model, p1, p2, height)
 	model:PivotTo(CFrame.new(newPosition) * newRotation)
 end
 
--- ============================================================================== --
--- ================================= CORE LOGIC ================================= --
--- ============================================================================== --
+---------------------------------- [LOGIC] ----------------------------------
+local Plot = GetPlot()
 
 local function HandleCash()
 	if not Enableds.Cash then return end
-
 	if not CashHitbox then
-		local newPlot = GetPlot()
+		local newPlot = Plot or GetPlot()
 		if newPlot then
 			local folder = newPlot:FindFirstChild("玩家区域")
 			if folder then
@@ -394,37 +380,27 @@ local function HandleHit()
 					table.clear(sortFishs)
 				end
 			end
-			
+
 			task.wait(1)
 		end
 	end)
 end
 
 local function FireRebirth()
-	if RebirthFill and RebirthButton and IsFillFull(RebirthFill) and Enableds.Rebirth then
+	if IsFillFull(RebirthFill) and Enableds.Rebirth then
 		FireButton(RebirthButton)
 	end
 end
 
 local function HandleRebirth()
-	if Connections.Rebirth then 
-		Connections.Rebirth:Disconnect() 
-		Connections.Rebirth = nil 
-	end
-
+	if Connections.Rebirth then Connections.Rebirth:Disconnect() Connections.Rebirth = nil end
 	if not Enableds.Rebirth then return end
-
 	RebirthFrame = RebirthFrame or (MainGui and MainGui:FindFirstChild("Rebirth+1water") and MainGui["Rebirth+1water"]:FindFirstChild("UI1") or nil)
-
 	if RebirthFrame then
 		RebirthFill = RebirthFill or (RebirthFrame:FindFirstChild("Progress bar") and RebirthFrame["Progress bar"]:FindFirstChild("Internal progress bar") or nil)
 		RebirthButton = RebirthButton or RebirthFrame:QueryDescendants("#RebirthButton > #TextButton")[1]
 	end
-
-	if RebirthFill then
-		Connections.Rebirth = RebirthFill:GetPropertyChangedSignal("Size"):Connect(FireRebirth)
-	end
-
+	Connections.Rebirth = RebirthFill:GetPropertyChangedSignal("Size"):Connect(FireRebirth)
 	task.spawn(function()
 		while Enableds.Rebirth do
 			FireRebirth()
@@ -433,10 +409,7 @@ local function HandleRebirth()
 	end)
 end
 
--- ============================================================================== --
--- ================================= UI SETUP =================================== --
--- ============================================================================== --
-
+---------------------------------- [UI SETUP] ----------------------------------
 local Window = UI:CreateWindow({
 	Name = "+1 Drain Water Per Click", 
 	Destroying = function()
@@ -466,7 +439,7 @@ Window:AddSlider({
 	Range = {1, MaxLevel > 0 and MaxLevel or 1},
 	Value = LevelTarget,
 	Increment = 1,
-	Flag = "checkpoint_index",
+	Flag = "checkpoint",
 	Callback = function(value)
 		LevelTarget = value
 	end
