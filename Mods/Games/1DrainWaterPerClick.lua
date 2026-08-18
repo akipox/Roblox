@@ -13,15 +13,7 @@ local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 -- State Management
-local Enableds = {
-	["Click"] = false, 
-	["Upgrade"] = false, 
-	["Cash"] = false, 
-	["Hit"] = false, 
-	["Sell"] = false, 
-	["Rebirth"] = false,
-	["EquipBestFish"] = false
-}
+local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Cash"] = false, ["Hit"] = false, ["Sell"] = false, ["Rebirth"] = false, ["EquipBestFish"] = false}
 local Connections = {}
 local Packets = {}
 local ClickIndex = 0
