@@ -154,7 +154,6 @@ StageToggle = Window:AddToggle({
 	Text = "Auto Stage",
 	Value = false,
 	Callback = function(value)
-		value = false
 		Enableds.Stage = value
 		HandleStage()
 	end
@@ -164,7 +163,6 @@ Window:AddToggle({
 	Text = "Auto Build",
 	Value = false,
 	Callback = function(value)
-		value = false
 		Enableds.Build = value
 		HandleBuild()
 	end
@@ -174,13 +172,10 @@ Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
 	Callback = function(value)
-		value = false
 		Enableds.Rebirth = value
 		HandleRebirth()
 	end
 })
-
-if true then return end
 
 Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
