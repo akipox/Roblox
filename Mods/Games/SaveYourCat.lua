@@ -53,7 +53,7 @@ local function PlayerRequestStreamAroundAsync(position, timeOut)
 	LocalPlayer:RequestStreamAroundAsync(position, timeOut)
 end
 
-local function TryChidNoCharacter(instance, name)  
+local function TryChildNoCharacter(instance, name)  
 	for _, child in ipairs(instance:GetChildren()) do
 		if child and child.Parent and child.Name:find(name) and not child:FindFirstChildOfClass("Humanoid") then
 			return child
@@ -88,7 +88,7 @@ end
 
 local function HandleBuild()
 	if not Enableds.Build then return end
-	TycoonFolder = TycoonFolder or TryChidNoCharacter(workspace, "TycoonButtons")
+	TycoonFolder = TycoonFolder or TryChildNoCharacter(workspace, "TycoonButtons")
 	Packets.TycoonPurchase = Packets.TycoonPurchase or ReplicatedStorage:QueryDescendants("#Remotes > #TycoonPurchase")[1]
 	task.spawn(function()
 		while Enableds.Build do
@@ -143,7 +143,7 @@ local Window = UI:CreateWindow({
 Window:AddSelect({
 	Text = "Stage Target",
 	Callback = function(target)
-		StageFolder = StageFolder or TryChidNoCharacter(workspace, "StageButtons")
+		StageFolder = StageFolder or TryChildNoCharacter(workspace, "StageButtons")
 		if StageFolder ~= nil and target:IsDescendantOf(StageFolder) and target.Name == "TriggerPart" then
 			StagePart = target
 		end
@@ -154,6 +154,7 @@ StageToggle = Window:AddToggle({
 	Text = "Auto Stage",
 	Value = false,
 	Callback = function(value)
+		value = false
 		Enableds.Stage = value
 		HandleStage()
 	end
@@ -163,6 +164,7 @@ Window:AddToggle({
 	Text = "Auto Build",
 	Value = false,
 	Callback = function(value)
+		value = false
 		Enableds.Build = value
 		HandleBuild()
 	end
@@ -172,10 +174,13 @@ Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
 	Callback = function(value)
+		value = false
 		Enableds.Rebirth = value
 		HandleRebirth()
 	end
 })
+
+if true then return end
 
 Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
