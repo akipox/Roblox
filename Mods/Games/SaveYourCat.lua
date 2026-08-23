@@ -11,11 +11,11 @@ local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 local Enableds, Connections, Packets = {["Stage"] = false, ["Build"] = false, ["Rebirth"] = false}, {}, {}
 local RebirthFill, RebirthButton = nil, nil
 
+local BuildSuccessColor = Color3.fromRGB(46, 204, 64)
 local TycoonFolder = nil
 local StageFolder = nil
 local StagePart = nil
 local StageToggle = nil
-local LastStagePart = {Size = Vector3.new(10, 1, 10), Position = Vector3.new(-7293.0126953125, 59.9652099609375, 1594.1334228515625)}
 local SaveStagePart = nil
 
 Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
@@ -54,9 +54,9 @@ local function PlayerRequestStreamAroundAsync(position, timeOut)
 end
 
 local function TryChidNoCharacter(instance, name)  
-    for _, child in ipairs(instance:GetChildren()) do
+	for _, child in ipairs(instance:GetChildren()) do
 		if child and child.Parent and child.Name:find(name) and not child:FindFirstChildOfClass("Humanoid") then
-		   return child
+			return child
 		end
 	end
 	return nil
@@ -76,8 +76,8 @@ local function HandleStage()
 			local humanoid = Character:FindFirstChildOfClass("Humanoid")
 			if rootPart and humanoid and StagePart ~= nil then
 				if teleportStage ~= StagePart then
-				   teleportStage = StagePart
-				   PlayerRequestStreamAroundAsync(teleportStage.Position, 5)
+					teleportStage = StagePart
+					PlayerRequestStreamAroundAsync(teleportStage.Position, 5)
 				end
 				SuperPivoTo(Character, StagePart, rootPart, humanoid.HipHeight)
 			end
@@ -86,8 +86,6 @@ local function HandleStage()
 	end)
 end
 
-local SuccessTycoonColor = Color3.fromRGB(46, 204, 64)
-
 local function HandleBuild()
 	if not Enableds.Build then return end
 	TycoonFolder = TycoonFolder or TryChidNoCharacter(workspace, "TycoonButtons")
@@ -95,13 +93,14 @@ local function HandleBuild()
 	task.spawn(function()
 		while Enableds.Build do
 			for _, button in ipairs(TycoonFolder:GetChildren()) do
-		       if not Enableds.Build then break end
-		       if not (button and button.Parent) then continue end
-		       local hitbox = button:FindFirstChild("TriggerPart")
-		       if not hitbox or hitbox.Color ~= SuccessTycoonColor then continue end
-			   Packets.TycoonPurchase:InvokeServer(button)
-			   task.wait(0.1)
-		    end
+				if not Enableds.Build then break end
+				if not (button and button.Parent) then continue end
+				local hitbox : BasePart = button:FindFirstChild("TriggerPart")
+				if not hitbox or hitbox.Color ~= BuildSuccessColor then continue end
+				if hitbox.Transparency == 1 then continue end
+				Packets.TycoonPurchase:InvokeServer(button)
+				task.wait(0.1)
+			end
 			task.wait(1)
 		end
 	end)
@@ -141,30 +140,12 @@ local Window = UI:CreateWindow({
 	end
 })
 
-local StageSelect = Window:AddSelect({
+Window:AddSelect({
 	Text = "Stage Target",
 	Callback = function(target)
 		StageFolder = StageFolder or TryChidNoCharacter(workspace, "StageButtons")
 		if StageFolder ~= nil and target:IsDescendantOf(StageFolder) and target.Name == "TriggerPart" then
 			StagePart = target
-		end
-	end
-})
-
-Window:AddToggle({
-	Text = "Use Last Stage",
-	Value = false,
-	Callback = function(value)
-		if value then
-			if StageSelect.Active == true then StageSelect.Active = false end
-			StageSelect.Visible = false
-			SaveStagePart = StagePart
-			StagePart = LastStagePart
-		else
-			if StageSelect.Active == false then StageSelect.Active = true end
-			StageSelect.Visible = true
-			StagePart = SaveStagePart
-			SaveStagePart = nil
 		end
 	end
 })
@@ -196,7 +177,5 @@ Window:AddToggle({
 	end
 })
 
-Window:AddLabel({
-	Text = "YouTube: Crokyreo",
-	TextColor3 = Color3.fromRGB(255, 255, 255)
-})
+Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
+Services.GuiService:SetGameplayPausedNotificationEnabled(false)
