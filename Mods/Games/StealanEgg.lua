@@ -6,11 +6,15 @@ local Players = Services.Players
 local RunService = Services.RunService
 local ReplicatedStorage = Services.ReplicatedStorage
 
-local Enableds = {["FarmEggs"] = false, ["AutoPlace"] = false, ["AutoFarm"] = false, ["AutoHatch"] = false, ["AutoEquip"] = false}
+local Enableds = {["Collect"] = false, ["Place"] = false, ["Farm"] = false, ["Hatch"] = false, ["Equip"] = false, ["Sell"] = false, ["Upgrade"] = false}
 local Connections = {}
-local Values = {["ChosenArea"] = "Automatic"}
+local Threads = {}
+local Values = {["ChosenArea"] = "Automatic", ["NoclipParts"] = {}, ["SellList"] = {}}
+local SaveValues = {}
 
 local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+local Backpack = LocalPlayer:FindFirstChildOfClass("Backpack")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 local Packets = {} 
@@ -19,7 +23,7 @@ local Plot = nil
 
 local PlotsFolder = workspace:FindFirstChild("Plots")
 
-for i, plot in pairs(PlotsFolder:GetChildren()) do
+for i, plot in ipairs(PlotsFolder:GetChildren()) do
 	local imageLabel = plot:QueryDescendants("#PlotSign > #PlayerPlotSign > #Frame > #PlayerIcon")[1]
 	if imageLabel and imageLabel.Image:find(tostring(LocalPlayer.UserId)) then
 		Plot = plot
@@ -33,7 +37,9 @@ local PlacedEggs = nil
 
 local Interfaces = {}
 
-for i, v in pairs(workspace:GetChildren()) do
+Interfaces.PetScroll = PlayerGui:QueryDescendants("#ActivePets > #Frame > #ScrollingFrame")[1]
+
+for i, v in ipairs(workspace:GetChildren()) do
 	if v.Name == "PlacedEggRenders" and #v:GetChildren() >= 1 then
 		PlacedEggs = v
 	end
@@ -42,7 +48,7 @@ end
 local AreasList = {
 	"Automatic"
 }
-for i, v in pairs(GuardAreas:GetChildren()) do
+for i, v in ipairs(GuardAreas:GetChildren()) do
 	table.insert(AreasList, v.Name)
 end
 
@@ -84,7 +90,15 @@ local LastInventory = nil
 
 Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(char)
 	Character = char
+	task.wait(2)
 end)
+
+local function FireButton(button)
+	if firesignal then
+		firesignal(button.Activated)
+		firesignal(button.MouseButton1Click)
+	end
+end
 
 local function GetBestArea()
 	local currentSpeed = SpeedValue.Value
@@ -125,6 +139,29 @@ local function walkTo(hum, pos)
 	end
 end
 
+local function GetBestPosition(height)
+	local closestPosition = nil
+	local closestDist = nil
+	
+	for _, model in ipairs(GuardAreas:GetChildren()) do
+		if model and model.Parent then
+			local surfacePart = model:FindFirstChild("Bounds")
+			if surfacePart then
+				if not Character and Character.Parent then return nil end
+				local rootPart = Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
+				if not rootPart then return nil end
+				local dist = (surfacePart.Position - rootPart.Position).Magnitude
+				if not closestDist or dist < closestDist then
+					closestDist = dist
+					closestPosition = surfacePart.Position
+				end
+			end
+		end
+	end
+
+	return closestPosition or Waypoints.SafeArea
+end
+
 local Window = UI:CreateWindow({
 	Name = "Steal an Egg",
 	Destroying = function()
@@ -143,46 +180,59 @@ Window:AddToggle({
 	Name = "Auto Farm",
 	Value = false,
 	Callback = function(v)
-		Enableds.AutoFarm = v
-
-		if Enableds.AutoFarm then
+		Enableds.Farm = v
+		if v then
 			task.spawn(function()
-				while Enableds.AutoFarm do
-					local NoclipParts = {}
-					local Noclipping
+				while Enableds.Farm do
+					task.wait()
+
+					Values.NoclipParts = {}
+					Values.SaveHipHeight = nil
+
+					if not (Character and Character.Parent) then continue end
 
 					local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+					if not Humanoid then continue end
+					
+					Values.LastHumanoid = Humanoid
+					Values.SaveHipHeight = Humanoid.HipHeight
 
-					Noclipping = RunService.Stepped:Connect(function()
-						if Enableds.AutoFarm then
-							for _, child in pairs(Character:GetDescendants()) do
+					Connections.Noclipping = RunService.Stepped:Connect(function()
+						if Enableds.Farm then
+							for _, child in ipairs(Character:GetDescendants()) do
 								if child:IsA("BasePart") and child.CanCollide == true then
 									child.CanCollide = false
-									NoclipParts[child] = true
+									Values.NoclipParts[child] = true
 								end
 							end
 						end
 					end)
 
-					if Enableds.FarmEggs and Packets.Steal then
+					if Enableds.Collect and Packets.Steal then
 						local bestArea = GuardAreas[GetBestArea()]
 
-						--Humanoid.HipHeight = 20
+						Humanoid.HipHeight = 20
 						task.wait(0.1)
-						walkTo(Humanoid, Waypoints.SafeArea)
-						--Humanoid.HipHeight = 2
+						walkTo(Humanoid, GetBestPosition())
+						Humanoid.HipHeight = 2
 						task.wait(0.1)
 						walkTo(Humanoid, bestArea.Bounds.Position)
 
 						local closestEgg, closestDist = nil, nil
-						for _, v in pairs(SpawnedEggs:GetChildren()) do
-							local primaryPart = v.PrimaryPart
-							if primaryPart then
-								local rootPart = Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
-								local dist = (primaryPart.Position - Character.HumanoidRootPart.Position).Magnitude
-								if not closestDist or dist < closestDist then
-									closestDist = dist
-									closestEgg = v
+						for _, v in ipairs(SpawnedEggs:GetChildren()) do
+							if v and v.Parent then
+								local primaryPart = v.PrimaryPart or v:FindFirstChildOfClass("BasePart")
+								if primaryPart then
+									if Character and Character.Parent then
+										local rootPart = Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
+										if rootPart~=nil then 
+											local dist = (primaryPart.Position - Character.HumanoidRootPart.Position).Magnitude
+											if not closestDist or dist < closestDist then
+												closestDist = dist
+												closestEgg = v
+											end
+										end
+									end
 								end
 							end
 						end
@@ -202,7 +252,7 @@ Window:AddToggle({
 
 					task.wait(0.5)
 
-					if Enableds.AutoPlace and Packets.Place then
+					if Enableds.Place and Packets.Place then
 						if LastInventory ~= nil then
 							Humanoid.HipHeight = 20
 							task.wait(0.1)
@@ -223,8 +273,8 @@ Window:AddToggle({
 						end
 					end
 
-					if Enableds.AutoHatch and Packets.Hatch and Packets.CompleteHatch then
-						for i, v in pairs(PlacedEggs:GetChildren()) do
+					if Enableds.Hatch and Packets.Hatch and Packets.CompleteHatch then
+						for i, v in ipairs(PlacedEggs:GetChildren()) do
 							if not (v and v.Parent) then continue end
 							local splitString = v.Name:split("_")
 							if splitString[1] == tostring(LocalPlayer.UserId) then
@@ -245,26 +295,45 @@ Window:AddToggle({
 						end
 					end
 
-					if Enableds.AutoEquip and Packets.EquipBest then
-						Packets.EquipBest:InvokeServer()
+					if Connections.Noclipping then
+						Connections.Noclipping:Disconnect()
+						Connections.Noclipping = nil
 					end
 
-					if Noclipping then
-						Noclipping:Disconnect()
-						Noclipping = nil
-					end
-					for part in pairs(NoclipParts) do
+					for part in pairs(Values.NoclipParts) do
 						if part and part.Parent then
 							part.CanCollide = true
 						end
 					end
-					NoclipParts = {}
 
+					Values.NoclipParts = {}
+
+					if Humanoid and Humanoid.Parent and Values.SaveHipHeight then
+						Humanoid.HipHeight = Values.SaveHipHeight
+						Values.SaveHipHeight = nil
+						Values.LastHumanoid = nil
+					end
 					task.wait(1)
-
-					task.wait()
 				end
 			end)
+		else
+			if Connections.Noclipping and not Enableds.Farm then
+				Connections.Noclipping:Disconnect()
+				Connections.Noclipping = nil
+			end
+			
+			if Values.LastHumanoid and Values.LastHumanoid.Parent and Values.SaveHipHeight then
+				Values.LastHumanoid.HipHeight = Values.SaveHipHeight
+				Values.SaveHipHeight = nil
+				Values.LastHumanoid = nil
+			end
+
+			for part in pairs(Values.NoclipParts) do
+				if Enableds.Farm then break end
+				if part and part.Parent then
+					part.CanCollide = true
+				end
+			end
 		end
 	end
 })
@@ -273,7 +342,7 @@ Interfaces.CollectToggle = Window:AddToggle({
 	Name = "Auto Collect",
 	Default = false,
 	Callback = function(v)
-		Enableds.FarmEggs = v
+		Enableds.Collect = v
 		if v then
 			if not Packets.Steal then
 				local ok, result = pcall(function()
@@ -290,7 +359,7 @@ Interfaces.CollectToggle = Window:AddToggle({
 			end
 		end
 		if not Packets.Steal then
-			Enableds.FarmEggs = false
+			Enableds.Collect = false
 			Interfaces.CollectToggle:Replace(false)
 		end
 	end
@@ -309,7 +378,7 @@ Interfaces.PlaceToggle = Window:AddToggle({
 	Name = "Auto Place",
 	Default = false,
 	Callback = function(v)
-		Enableds.AutoPlace = v
+		Enableds.Place = v
 		if v then
 			if not Packets.Place then
 				local ok, result = pcall(function()
@@ -346,7 +415,7 @@ Interfaces.PlaceToggle = Window:AddToggle({
 			end
 		end
 		if not (Packets.Place and Packets.Inventory) then
-			Enableds.AutoPlace = false
+			Enableds.Place = false
 			Interfaces.PlaceToggle:Replace(false)
 		end
 	end
@@ -356,7 +425,7 @@ Interfaces.HatchToggle = Window:AddToggle({
 	Name = "Auto Hatch",
 	Default = false,
 	Callback = function(v)
-		Enableds.AutoHatch = v
+		Enableds.Hatch = v
 		if v then
 			if not Packets.Hatch then
 				local ok, result = pcall(function()
@@ -384,7 +453,7 @@ Interfaces.HatchToggle = Window:AddToggle({
 			end
 		end
 		if not (Packets.Hatch and Packets.CompleteHatch) then
-			Enableds.AutoHatch = false
+			Enableds.Hatch = false
 			Interfaces.HatchToggle:Replace(false)
 		end 
 	end
@@ -394,7 +463,7 @@ Interfaces.EquipToggle = Window:AddToggle({
 	Name = "Auto Equip Best",
 	Default = false,
 	Callback = function(v)
-		Enableds.AutoEquip = v
+		Enableds.Equip = v
 		if v then
 			if not Packets.EquipBest then
 				local ok, result = pcall(function()
@@ -410,9 +479,108 @@ Interfaces.EquipToggle = Window:AddToggle({
 			end
 		end
 		if not Packets.EquipBest then
-			Enableds.AutoEquip = false
+			Enableds.Equip = false
 			Interfaces.EquipToggle:Replace(false)
 		end 
+		if Enableds.Equip and Packets.EquipBest then
+			task.spawn(function()
+				while Enableds.Equip do
+					Packets.EquipBest:InvokeServer()
+					task.wait(3)
+				end
+			end)
+		end
+	end
+})
+
+Interfaces.UpgradeToggle = Window:AddToggle({
+	Name = "Upgrade Treadmill",
+	Default = false,
+	Callback = function(v)
+		Enableds.Upgrade = v
+		if v then
+			Interfaces.ThreadmillButton = Interfaces.ThreadmillButton or Plot:QueryDescendants("#Sign > #SurfaceGui > #Frame > #Upgrade")[1]
+			Interfaces.ThreadmillHint = Interfaces.ThreadmillHint or Plot:QueryDescendants("#Sign > #CanUpgrade")[1]
+
+			if not (Interfaces.ThreadmillHint and Interfaces.ThreadmillButton) then 
+				Enableds.Upgrade = false
+				Interfaces.UpgradeToggle:Replace(false)
+				return
+			end
+
+			task.spawn(function()
+				while Enableds.Upgrade do
+					if Interfaces.ThreadmillHint.Enabled then
+						FireButton(Interfaces.ThreadmillButton)
+					end
+					task.wait()
+				end
+			end)
+		end
+	end
+})
+
+Window:AddButton({
+	Name = "Auto Unequip",
+	MethodType = "DoubleClick",
+	Callback = function()
+		if not Packets.Unequip then
+			local ok, result = pcall(function()
+				return ReplicatedStorage.Packages.Networking["RF/PenRoster/AskDoff"]
+			end)
+			if ok and result then Packets.Unequip = result end
+		end
+		if Packets.Unequip and Interfaces.PetScroll then
+			for _, layer in ipairs(Interfaces.PetScroll:GetChildren()) do
+				if layer and layer.Parent and layer:IsA("GuiObject") then
+					if string.find(layer.Name, "Pet_") then
+						local cleanName = string.gsub(layer.Name, "Pet_", "")
+						if cleanName then
+							Packets.Unequip:InvokeServer(cleanName)
+						end
+					end
+				end
+			end
+		end
+	end
+})
+
+Interfaces.SellToggle = Window:AddToggle({
+	Name = "Auto Sell",
+	Default = false,
+	Callback = function(v)
+		Enableds.Sell = v
+		if v then
+			if not Packets.SellAll then
+				local ok, result = pcall(function()
+					return ReplicatedStorage.Packages.Networking["RE/PetSatchel/SellEveryPet"]
+				end)
+				if ok and result then Packets.SellAll = result end
+			end
+	
+			if not Packets.SellAll then 
+				Enableds.Sell = false
+				Interfaces.SellToggle:Replace(false)
+				return
+			end
+
+			task.spawn(function()
+				while Enableds.Sell do
+					Values.SellList = {}
+					for _, tool in ipairs(Backpack:GetChildren()) do
+						if tool and tool.Parent then
+							local uid = tool:GetAttribute("UID")
+							if uid ~= nil then
+								table.insert(Values.SellList, uid)
+							end
+						end
+					end
+					Packets.SellAll:FireServer(Values.SellList)
+					task.wait(3)
+					Values.SellList={}
+				end
+			end)
+		end
 	end
 })
 
@@ -425,40 +593,3 @@ Window:AddLabel({
 	Name = "YouTube: vaehz",
 	TextColor3 = Color3.fromRGB(255, 255, 255),
 })
-
---[[
-workspace.Plots["6"].TreadmillUpgrade.Sign.CanUpgrade
- workspace.Plots["6"].TreadmillUpgrade.Sign.SurfaceGui.Frame.Upgrade
-workspace.__OBJECTS.Areas.GuardAreas.Jungle.Bounds
-
-
--- Unequip 
--- This code was generated by Cobalt
--- https://gitlab.com/upio/cobalt
-
-local Event = game:GetService("ReplicatedStorage").Packages.Networking["RF/PenRoster/AskDoff"]
-Event:InvokeServer(
-    "2c1c30b78ace4ea0ab4e5fb29dab9bde"
-)
-
-game:GetService("Players").LocalPlayer.PlayerGui.ActivePets.Frame.ScrollingFrame.Pet_2c1c30b78ace4ea0ab4e5fb29dab9bde
-
-
---- game:GetService("Players").LocalPlayer.Backpack["Centapede (5.32 kg)"] -- UID
-
--- This code was generated by Cobalt
--- https://gitlab.com/upio/cobalt
-
-local Event = game:GetService("ReplicatedStorage").Packages.Networking["RE/PetSatchel/SellEveryPet"]
-Event:FireServer(
-    {
-        "091009303b6a4cb185084caa266f8c09",
-        "5f685ef0a2aa43f7a895533cf197ad17",
-        "dbcc7af720ff402188ec43346d304885",
-        "dbe5f0e8f5624f3db52e3f38df8ec760",
-        "94d863e423794065ac642a3aa3b93c67",
-        "1d7cb06dce04432bbf559bcfd649ffb3"
-    }
-)
-]]
-
