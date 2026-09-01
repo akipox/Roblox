@@ -363,7 +363,6 @@ Interfaces.HatchToggle = Window:AddToggle({
 					return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskHatch"]
 				end)
 				if ok and result then Packets.Hatch = result end
-
 				if not Packets.Hatch then
 					ok, result = pcall(function()
 						return ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
@@ -376,7 +375,6 @@ Interfaces.HatchToggle = Window:AddToggle({
 					return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFinishHatch"]
 				end)
 				if ok and result then Packets.CompleteHatch = result end
-
 				if not Packets.CompleteHatch then
 					ok, result = pcall(function()
 						return ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
@@ -403,7 +401,6 @@ Interfaces.EquipToggle = Window:AddToggle({
 					return ReplicatedStorage.Packages.Networking["RF/Haul/WearBest"]
 				end)
 				if ok and result then Packets.EquipBest = result end
-
 				if not Packets.EquipBest then
 					ok, result = pcall(function()
 						return ReplicatedStorage.Network["Backpack: EquipBest"]
@@ -420,11 +417,11 @@ Interfaces.EquipToggle = Window:AddToggle({
 })
 
 Window:AddLabel({
-	Name = "YouTube: vaehz",
+	Name = "YouTube: Crokyreo",
 	TextColor3 = Color3.fromRGB(255, 255, 255),
 })
 
 Window:AddLabel({
-	Name = "YouTube: Crokyreo",
+	Name = "YouTube: vaehz",
 	TextColor3 = Color3.fromRGB(255, 255, 255),
 })
