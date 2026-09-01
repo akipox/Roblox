@@ -14,6 +14,8 @@ local Values = {["ChosenArea"] = "Automatic"}
 local Player = Players.LocalPlayer
 local Character = Player.Character or Player.CharacterAdded:Wait()
 
+local Packets = {} 
+
 local SpeedVal = Player.leaderstats.Speed
 local PlayerBase
 
@@ -40,6 +42,7 @@ for i, v in pairs(GuardAreas:GetChildren()) do
 	table.insert(AreasList, v.Name)
 end
 
+--[[
 local StealEvent = ReplicatedStorage.Network["Eggs: RequestAreaEggCarry"]
 local PlaceEvent = ReplicatedStorage.Network["Eggs: RequestPlaceEgg"]
 local HatchEvent = ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
@@ -47,6 +50,7 @@ local EquipEvent = ReplicatedStorage.Network["Backpack: EquipBest"]
 local CompleteHatchEvent = ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
 
 local InventoryEvent = ReplicatedStorage.Network["Eggs: RuntimeOwnerUpdated"]
+]]
 
 local Areas = {
 	["Forest"] = {
@@ -128,11 +132,18 @@ Connections.CharacterAdded = Player.CharacterAdded:Connect(function(char)
 	Character = char
 end)
 
-Connections.InventoryAdded = InventoryEvent.OnClientEvent:Connect(function(data)
-	if data.OwnerUserId == Player.UserId then
-		LastInventory = data.Records
+task.spawn(function()
+	if not Packets.InventoryChanged then
+		return 
 	end
+	Packets.InventoryChanged = ReplicatedStorage.Network["Eggs: RuntimeOwnerUpdated"]
+	Connections.InventoryChanged = Packets.InventoryChanged.OnClientEvent:Connect(function(data)
+	    if data.OwnerUserId == Player.UserId then
+		   LastInventory = data.Records
+	    end
+    end)
 end)
+	
 
 local Window = UI:CreateWindow({
 	Name = "Steal an Egg",
@@ -214,7 +225,7 @@ Window:AddToggle({
 
 						task.wait(0.5)
 
-						if Enableds.AutoPlace then
+						if Enableds.AutoPlace and Packets.Place then
 							if LastInventory ~= nil then
 								Humanoid.HipHeight = 20
 								task.wait(0.1)
@@ -223,7 +234,7 @@ Window:AddToggle({
 								for i, v in pairs(LastInventory) do
 									local randomArea = CFrame.new(math.random(-23, 23), -0.5001220703125, math.random(-29, 29), 0, 0, 1, 0, 1, 0, -1, 0, 0)
 
-									PlaceEvent:InvokeServer(
+									Packets.Place:InvokeServer(
 										{
 											Uid = i,
 											LocalCFrame = randomArea
@@ -235,7 +246,7 @@ Window:AddToggle({
 							end
 						end
 
-						if Enableds.AutoHatch then
+						if Enableds.AutoHatch and Packets.Hatch and Packets.CompleteHatch then
 							for i, v in pairs(PlacedEggs:GetChildren()) do
 								local splitString = v.Name:split("_")
 								if splitString[1] == tostring(Player.UserId) then
@@ -243,12 +254,12 @@ Window:AddToggle({
 									task.wait(0.1)
 									walkTo(Humanoid, v.PrimaryPart.Position)
 
-									local res = HatchEvent:InvokeServer(
+									local res = Packets.Hatch:InvokeServer(
 										splitString[2]
 									)
 
 									if res then
-										CompleteHatchEvent:InvokeServer(splitString[2])
+										Packets.CompleteHatch:InvokeServer(splitString[2])
 									end
 
 									task.wait(0.1)
@@ -256,8 +267,8 @@ Window:AddToggle({
 							end
 						end
 
-						if Enableds.AutoEquip then
-							EquipEvent:InvokeServer()
+						if Enableds.AutoEquip and Packets.EquipBest then
+							Packets.EquipBest:InvokeServer()
 						end
 
 						if Noclipping then
@@ -303,6 +314,19 @@ Window:AddToggle({
 	Default = false,
 	Callback = function(v)
 		Enableds.AutoPlace = v
+		if v then
+		   if not Packets.Place then
+		       local ok = pcall(function()
+			       Packets.Place = Packets.Place or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskPlaceEgg"]
+		       end)
+
+		       if not ok then
+			       ok = pcall(function()
+			           Packets.Place = Packets.Place or ReplicatedStorage.Network["Eggs: RequestPlaceEgg"]
+		           end)
+			   end
+		   end
+		end
 	end
 })
 
@@ -311,6 +335,31 @@ Window:AddToggle({
 	Default = false,
 	Callback = function(v)
 		Enableds.AutoHatch = v
+			
+	    if v then
+		   if not Packets.Hatch then
+		       local ok = pcall(function()
+			       Packets.Hatch = Packets.Hatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskHatch"]
+		       end)
+
+		       if not ok then
+			       ok = pcall(function()
+			           Packets.Hatch = Packets.Hatch or ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
+		           end)
+			   end
+		   end
+		   if not Packets.CompleteHatch then
+		       local ok = pcall(function()
+			       Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFinishHatch"]
+		       end)
+
+		       if not ok then
+			       ok = pcall(function()
+			           Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
+		           end)
+			   end
+			end
+		end
 	end
 })
 
@@ -319,6 +368,19 @@ Window:AddToggle({
 	Default = false,
 	Callback = function(v)
 		Enableds.AutoEquip = v
+		if v then
+		   if not Packets.EquipBest then
+		       local ok = pcall(function()
+			       Packets.EquipBest = Packets.EquipBest or ReplicatedStorage.Packages.Networking["RF/Haul/WearBest"]
+		       end)
+
+		       if not ok then
+			       ok = pcall(function()
+			           Packets.EquipBest = Packets.EquipBest or ReplicatedStorage.Network["Backpack: EquipBest"]
+		           end)
+			   end
+		   end
+		end
 	end
 })
 
