@@ -514,6 +514,5 @@ Window:AddToggle({
 -- Credits & Info
 Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
 Window:AddLabel({ Text = "YouTube: Tora IsMe", TextColor3 = Color3.fromRGB(255, 255, 255) })
-Window:AddLabel({ Text = "Date: 08-15-2026", TextColor3 = Color3.fromRGB(255, 255, 255) })
 
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
