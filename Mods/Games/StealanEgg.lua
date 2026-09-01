@@ -168,7 +168,6 @@ Window:AddToggle({
 		if Enableds.AutoFarm then
 			task.spawn(function()
 				while Enableds.AutoFarm do
-					pcall(function()
 						local NoclipParts = {}
 						local Noclipping
 
@@ -248,6 +247,7 @@ Window:AddToggle({
 
 						if Enableds.AutoHatch and Packets.Hatch and Packets.CompleteHatch then
 							for i, v in pairs(PlacedEggs:GetChildren()) do
+								if not (v and v.Parent) then continue end
 								local splitString = v.Name:split("_")
 								if splitString[1] == tostring(Player.UserId) then
 									Humanoid.HipHeight = 20
@@ -283,7 +283,6 @@ Window:AddToggle({
 						NoclipParts = {}
 
 						task.wait(1)
-					end)
 
 					task.wait()
 				end
@@ -299,19 +298,21 @@ Window:AddToggle({
 		Enableds.FarmEggs = v
 		if v then
 		   if not Packets.Steal then
-		       pcall(function()
-			       Packets.Steal = Packets.Steal or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFieldEggCarry"]
+			   local ok, result = pcall(function()
+			       return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFieldEggCarry"]
 		       end)
-
+			   if ok and result then Packets.Steal = result end
+					
 		       if not Packets.Steal then
-			       pcall(function()
-			           Packets.Steal = Packets.Steal or ReplicatedStorage.Network["Eggs: RequestAreaEggCarry"]
+			       ok, result = pcall(function()
+			           return ReplicatedStorage.Network["Eggs: RequestAreaEggCarry"]
 		           end)
+				   if ok and result then Packets.Steal = result end
 			   end
 		   end
 		end
-		if not Packets.Steal then
-			print("Auto Collect: Failed")
+		if Packets.Steal then
+			print("Auto Collect:",v)
 		end
 	end
 })
@@ -332,19 +333,21 @@ Window:AddToggle({
 		Enableds.AutoPlace = v
 		if v then
 		   if not Packets.Place then
-		       pcall(function()
-			       Packets.Place = Packets.Place or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskPlaceEgg"]
+			   local ok, result = pcall(function()
+			       return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskPlaceEgg"]
 		       end)
-
+			   if ok and result then Packets.Place = result end
+					
 		       if not Packets.Place then
-			       pcall(function()
-			           Packets.Place = Packets.Place or ReplicatedStorage.Network["Eggs: RequestPlaceEgg"]
+			       ok, result = pcall(function()
+			           return ReplicatedStorage.Network["Eggs: RequestPlaceEgg"]
 		           end)
+				   if ok and result then Packets.Place = result end
 			   end
 		   end
 		end
-		if not Packets.Place then
-			print("Auto Place: Failed")
+		if Packets.Place then
+			print("Auto Place:",v)
 		end
 	end
 })
@@ -356,28 +359,34 @@ Window:AddToggle({
 		Enableds.AutoHatch = v
 	    if v then
 		   if not Packets.Hatch then
-		       pcall(function()
-			       Packets.Hatch = Packets.Hatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskHatch"]
+			   local ok, result = pcall(function()
+			       return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskHatch"]
 		       end)
+			   if ok and result then Packets.Hatch = result end
+					
 		       if not Packets.Hatch then
-			       pcall(function()
-			           Packets.Hatch = Packets.Hatch or ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
+			       ok, result = pcall(function()
+			           return ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
 		           end)
+				   if ok and result then Packets.Hatch = result end
 			   end
 		   end
 		   if not Packets.CompleteHatch then
-		       pcall(function()
-			       Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFinishHatch"]
+			   local ok, result = pcall(function()
+			       return ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFinishHatch"]
 		       end)
+			   if ok and result then Packets.CompleteHatch = result end
+					
 		       if not Packets.CompleteHatch then
-			       pcall(function()
-			           Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
+			       ok, result = pcall(function()
+			           return ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
 		           end)
+				   if ok and result then Packets.CompleteHatch = result end
 			   end
 			end
 		end
-		if not (Packets.Hatch and Packets.CompleteHatch) then
-			print("Auto Hatch: Failed")
+		if Packets.Hatch and Packets.CompleteHatch then
+			print("Auto Hatch:",v)
 		end 
 	end
 })
@@ -389,19 +398,21 @@ Window:AddToggle({
 		Enableds.AutoEquip = v
 		if v then
 		   if not Packets.EquipBest then
-		       pcall(function()
-			       Packets.EquipBest = Packets.EquipBest or ReplicatedStorage.Packages.Networking["RF/Haul/WearBest"]
+			   local ok, result = pcall(function()
+			       return ReplicatedStorage.Packages.Networking["RF/Haul/WearBest"]
 		       end)
-
+			   if ok and result then Packets.EquipBest = result end
+					
 		       if not Packets.EquipBest then
-			       pcall(function()
-			           Packets.EquipBest = Packets.EquipBest or ReplicatedStorage.Network["Backpack: EquipBest"]
+			       ok, result = pcall(function()
+			           return ReplicatedStorage.Network["Backpack: EquipBest"]
 		           end)
+				   if ok and result then Packets.EquipBest = result end
 			   end
 		   end
 		end
-		if not (Packets.EquipBest) then
-			print("Auto Equip Best: Failed")
+		if Packets.EquipBest then
+			print("Auto Equip Best:",v)
 		end 
 	end
 })
