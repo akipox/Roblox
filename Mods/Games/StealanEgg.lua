@@ -103,7 +103,7 @@ local function GetBestArea()
 		bestName = ChosenArea
 	end
 
-	return bestName
+	return bestName or "Forest"
 end
 
 local function walkTo(hum, pos)
@@ -415,6 +415,13 @@ Window:AddToggle({
 			print("Auto Equip Best:",v)
 		end 
 	end
+})
+
+Window:AddDropdown({
+	Name = "Area List",
+	Options = AreasList,
+	Multi = true,
+	Callback = function(option) end
 })
 
 Window:AddLabel({
