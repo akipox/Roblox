@@ -248,7 +248,7 @@ Window:AddToggle({
 								if not (v and v.Parent) then continue end
 								local splitString = v.Name:split("_")
 								if splitString[1] == tostring(Player.UserId) then
-									Humanoid.HipHeight = 20
+									--Humanoid.HipHeight = 20
 									task.wait(0.1)
 									walkTo(Humanoid, v.PrimaryPart.Position)
 
