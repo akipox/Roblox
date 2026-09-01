@@ -18,15 +18,17 @@ local Packets = {}
 local SpeedValue = LocalPlayer:QueryDescendants("#leaderstats > #Speed")[1]
 local Plot = nil
 
-for i, plot in pairs(workspace.Plots:GetChildren()) do
+local PlotsFolder = workspace:FindFirstChild("Plots")
+
+for i, plot in pairs(PlotsFolder:GetChildren()) do
 	local imageLabel = plot:QueryDescendants("#PlotSign > #PlayerPlotSign > #Frame > #PlayerIcon")[1]
-	if imageLabel and  imageLabel.Image:find(tostring(LocalPlayer.UserId)) then
+	if imageLabel and imageLabel.Image:find(tostring(LocalPlayer.UserId)) then
 		Plot = plot
 		break
 	end
 end
 
-local GuardAreas = workspace:QueryDescendants("#__OBJECTS > #Areas > #GuardAreas") [1]
+local GuardAreas = workspace:QueryDescendants("#__OBJECTS > #Areas > #GuardAreas")[1]
 local SpawnedEggs = workspace:FindFirstChild("AreaEggSlotsClient")
 local PlacedEggs
 
@@ -81,14 +83,6 @@ local LastInventory = nil
 
 Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(char)
 	Character = char
-end)
-
-Packets.InventoryChanged = ReplicatedStorage.Network["Eggs: RuntimeOwnerUpdated"]
-
-Connections.InventoryChanged = Packets.InventoryChanged.OnClientEvent:Connect(function(data)
-	if data.OwnerUserId == LocalPlayer.UserId then
-		LastInventory = data.Records
-	end
 end)
 
 local function GetBestArea()
