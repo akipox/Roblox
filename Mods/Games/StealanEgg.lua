@@ -14,7 +14,6 @@ local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 local Packets = {} 
-
 local SpeedValue = LocalPlayer:QueryDescendants("#leaderstats > #Speed")[1]
 local Plot = nil
 
