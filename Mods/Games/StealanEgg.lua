@@ -326,7 +326,7 @@ Interfaces.PlaceToggle = Window:AddToggle({
 			end
 			if not Packets.Inventory then
 				local ok, result = pcall(function()
-					return ReplicatedStorage.Packages.Networking["RE/EggWorld/OwnerShifted
+					return ReplicatedStorage.Packages.Networking["RE/EggWorld/OwnerShifted"]
 				end)
 				if ok and result then Packets.Inventory = result end
 
