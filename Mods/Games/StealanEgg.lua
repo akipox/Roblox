@@ -103,7 +103,7 @@ local function GetBestArea()
 		bestName = ChosenArea
 	end
 
-	return bestName or "Forest"
+	return bestName or "Lake"
 end
 
 local function walkTo(hum, pos)
@@ -187,17 +187,18 @@ Window:AddToggle({
 						if Enableds.FarmEggs and Packets.Steal then
 							local bestArea = GuardAreas[GetBestArea()]
 
-							Humanoid.HipHeight = 20
+							--Humanoid.HipHeight = 20
 							task.wait(0.1)
 							walkTo(Humanoid, Waypoints.SafeArea)
-							Humanoid.HipHeight = 2
+							--Humanoid.HipHeight = 2
 							task.wait(0.1)
 							walkTo(Humanoid, bestArea.Bounds.Position)
-
-							local closestEgg, closestDist
+							
+							local closestEgg, closestDist = nil, nil
 							for _, v in pairs(SpawnedEggs:GetChildren()) do
 								local primaryPart = v.PrimaryPart
 								if primaryPart then
+									local rootPart = Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
 									local dist = (primaryPart.Position - Character.HumanoidRootPart.Position).Magnitude
 									if not closestDist or dist < closestDist then
 										closestDist = dist
@@ -206,19 +207,16 @@ Window:AddToggle({
 								end
 							end
 
-							walkTo(Humanoid, closestEgg.PrimaryPart.Position)
+							if closestEgg then
+							    walkTo(Humanoid, closestEgg.PrimaryPart.Position)
 
-							task.wait(0.5)
+							    task.wait(0.5)
 
-							walkTo(Humanoid, closestEgg.PrimaryPart.Position)
-							task.wait()
+							    walkTo(Humanoid, closestEgg.PrimaryPart.Position)
+							    task.wait()
 
-							Packets.Steal:InvokeServer(
-								{
-									Uid = closestEgg.Name
-								}
-							)
-
+							    Packets.Steal:InvokeServer({Uid = closestEgg.Name})
+							end
 							walkTo(Humanoid, Waypoints.SafeArea)
 						end
 
