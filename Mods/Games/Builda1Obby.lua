@@ -12,7 +12,7 @@ local Enableds={["Cash"]=false,["Upgrade"]=false,["Rebirth"]=false}
 local Cacheds={}
 
 local Packets={
-	["RequestPlot"]=script:QueryDescendants("#GameSystems > #Packages > #Networker >> #networker > #_remotes > #PlotService > #RemoteEvent")[1]
+	["RequestPlot"]=ReplicatedStorage:QueryDescendants("#GameSystems > #Packages > #Networker >> #networker > #_remotes > #PlotService > #RemoteEvent")[1]
 }
 
 local Interfaces={
