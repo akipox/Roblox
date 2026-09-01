@@ -185,7 +185,7 @@ Window:AddToggle({
 							end
 						end)
 
-						if Enableds.FarmEggs then
+						if Enableds.FarmEggs and Packets.Steal then
 							local bestArea = GuardAreas[GetBestArea()]
 
 							Humanoid.HipHeight = 20
@@ -214,7 +214,7 @@ Window:AddToggle({
 							walkTo(Humanoid, closestEgg.PrimaryPart.Position)
 							task.wait()
 
-							StealEvent:InvokeServer(
+							Packets.Steal:InvokeServer(
 								{
 									Uid = closestEgg.Name
 								}
@@ -297,6 +297,19 @@ Window:AddToggle({
 	Default = false,
 	Callback = function(v)
 		Enableds.FarmEggs = v
+		if v then
+		   if not Packets.Steal then
+		       --local ok = pcall(function()
+			       --Packets.Place = Packets.Place or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskPlaceEgg"]
+		       --end)
+
+		       if not Packets.Steal then
+			       ok = pcall(function()
+			           Packets.Steal = Packets.Steal or ReplicatedStorage.Network["Eggs: RequestAreaEggCarry"]
+		           end)
+			   end
+		   end
+		end
 	end
 })
 
@@ -320,7 +333,7 @@ Window:AddToggle({
 			       Packets.Place = Packets.Place or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskPlaceEgg"]
 		       end)
 
-		       if not ok then
+		       if not Packets.Place then
 			       ok = pcall(function()
 			           Packets.Place = Packets.Place or ReplicatedStorage.Network["Eggs: RequestPlaceEgg"]
 		           end)
@@ -342,7 +355,7 @@ Window:AddToggle({
 			       Packets.Hatch = Packets.Hatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskHatch"]
 		       end)
 
-		       if not ok then
+		       if not Packets.Hatch then
 			       ok = pcall(function()
 			           Packets.Hatch = Packets.Hatch or ReplicatedStorage.Network["Eggs: RequestHatchEgg"]
 		           end)
@@ -353,7 +366,7 @@ Window:AddToggle({
 			       Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Packages.Networking["RF/EggWorld/AskFinishHatch"]
 		       end)
 
-		       if not ok then
+		       if not Packets.CompleteHatch then
 			       ok = pcall(function()
 			           Packets.CompleteHatch = Packets.CompleteHatch or ReplicatedStorage.Network["Eggs: RequestCompleteHatchEgg"]
 		           end)
