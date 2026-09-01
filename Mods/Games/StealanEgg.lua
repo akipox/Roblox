@@ -6,7 +6,7 @@ local Players = Services.Players
 local RunService = Services.RunService
 local ReplicatedStorage = Services.ReplicatedStorage
 
-local Enableds = {["Collect"] = false, ["Place"] = false, ["Farm"] = false, ["Hatch"] = false, ["Equip"] = false, ["Sell"] = false, ["Upgrade"] = false}
+local Enableds = {["Collect"] = false, ["Place"] = false, ["Farm"] = false, ["Hatch"] = false, ["Equip"] = false, ["Sell"] = false, ["Upgrade"] = false, ["BuyTrail"] = false}
 local Connections = {}
 local Threads = {}
 local Values = {["ChosenArea"] = "Automatic", ["NoclipParts"] = {}, ["SellList"] = {}}
@@ -520,27 +520,14 @@ Interfaces.UpgradeToggle = Window:AddToggle({
 	end
 })
 
-Window:AddButton({
-	Name = "Auto Unequip",
-	MethodType = "DoubleClick",
-	Callback = function()
-		if not Packets.Unequip then
-			local ok, result = pcall(function()
-				return ReplicatedStorage.Packages.Networking["RF/PenRoster/AskDoff"]
-			end)
-			if ok and result then Packets.Unequip = result end
-		end
-		if Packets.Unequip and Interfaces.PetScroll then
-			for _, layer in ipairs(Interfaces.PetScroll:GetChildren()) do
-				if layer and layer.Parent and layer:IsA("GuiObject") then
-					if string.find(layer.Name, "Pet_") then
-						local cleanName = string.gsub(layer.Name, "Pet_", "")
-						if cleanName then
-							Packets.Unequip:InvokeServer(cleanName)
-						end
-					end
-				end
-			end
+Interfaces.BuyTrail = Window:AddToggle({
+	Name = "Buy Trail",
+	Default = false,
+	Callback = function(v)
+		Enableds.BuyTrail = v
+		if v then
+			Enableds.BuyTrail = false
+			Interfaces.BuyTrail:Replace(false)
 		end
 	end
 })
