@@ -243,7 +243,7 @@ local function HandleCash()
 					FireTouch(rootPart,CashHitbox)
 				end
 			end
-			task.wait(1)
+			task.wait(3)
 		end
 	end)
 end
@@ -302,11 +302,10 @@ local function HandleUpgrade()
 end
 
 local function HandleLike()
-	if not Packets.RequestPlot then return end
+	if not Packets.RequestPlot then print("Like: Failed") return end
 	for _,info in ipairs(GetPlots()) do
 		local player=Players:FindFirstChild(info.OwnerName)
 		if player then
-			print(player.Name)
 			Packets.RequestPlot:FireServer("LikePlot",player)
 		end
 		task.wait()
@@ -355,7 +354,7 @@ Window:AddDropdown({
 		ActiveData.ASMRs.AllEnabled=#option<=0
 	end
 })
-
+  
 Window:AddDropdown({
 	Text="Part Type",
 	Options=#TypeData.Parts>0 and TypeData.Parts or {"No Part Type"},
@@ -393,7 +392,6 @@ Window:AddToggle({
 
 Window:AddButton({
 	Text="Like",
-	MethodType="DebounceClick",
 	Callback=HandleLike
 })
 
