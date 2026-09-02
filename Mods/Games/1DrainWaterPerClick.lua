@@ -342,7 +342,7 @@ local function HandleStage()
 
 					if WorldFishFolder then
 						for _, child in ipairs(WorldFishFolder:GetChildren()) do
-							if not Enableds.Hit then break end
+							if not Enableds.Stage then break end
 							if child and child.Parent and child:IsA("Model") then
 								local stageId = child:GetAttribute("StageId")
 								if stageId == nil or stageId ~= lastLevel then continue end
@@ -379,6 +379,7 @@ local function HandleStage()
 							else
 								FireButton(Interfaces.HomeButton)
 							end
+							task.wait(0.1)
 							break
 						end
 						local spawnPoint, prompt = info.SpawnPoint, info.Prompt
