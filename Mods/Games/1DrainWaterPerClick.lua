@@ -13,30 +13,32 @@ local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 -- State Management
-local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Cash"] = false, ["Hit"] = false, ["Sell"] = false, ["Rebirth"] = false, ["EquipBestFish"] = false}
+local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Cash"] = false, ["Stage"] = false, ["Sell"] = false, ["Rebirth"] = false, ["Equip"] = false}
 local Connections = {}
 local Packets = {}
 local ClickIndex = 0
 
 -- UI & Game Objects
-local MainGui = PlayerGui:FindFirstChild("Main")
-local HomeButton = PlayerGui:QueryDescendants("#HUD > #Main > #Top > #GoShow > #TextButton")[1]
-local UpgradeScroll = LocalPlayer:QueryDescendants("#Main > #Upgrades > #Main > #ScrollingFrame")[1]
+local Interfaces={
+	["MainGui"] = PlayerGui:FindFirstChild("Main"),
+	["HomeButton"] = PlayerGui:QueryDescendants("#HUD > #Main > #Top > #GoShow > #TextButton")[1],
+	["UpgradeScroll"] = PlayerGui:QueryDescendants("#Main > #Upgrades > #Main > #ScrollingFrame")[1],
+}
+
+local AmountValue = LocalPlayer:QueryDescendants("#BackpackData > #amount")[1]
 local CapacityValue = LocalPlayer:QueryDescendants("#BackpackData > #capacity")[1]
 local StageValue = LocalPlayer:QueryDescendants("#Stage > #stage")[1]
 
+
 local UpgradeTypes, UpgradeActives, UpgradeInfos = {}, {["AllEnabled"] = true}, {}
-local ProfileData = {}
+local ProfileData = {
+	["MaxStage"] = 0
+}
 
 local StageFolder = nil
 local WorldFishFolder = nil
-local RebirthFrame, RebirthFill, RebirthButton = nil, nil, nil
 local CashHitbox = nil
-local HitToggle = nil
 local CashToggle = nil
-
-local MaxLevel = 0
-
 ---------------------------------- [INITIALIZATION] ----------------------------------
 -- Track Player Data
 if StageValue and (StageValue:IsA("NumberValue") or StageValue:IsA("IntValue")) then
@@ -53,6 +55,13 @@ if CapacityValue and (CapacityValue:IsA("NumberValue") or CapacityValue:IsA("Int
 	end)
 end
 
+if AmountValue and (AmountValue:IsA("NumberValue") or AmountValue:IsA("IntValue")) then
+	ProfileData.Amount = AmountValue.Value
+	Connections.AmountChanged = AmountValue:GetPropertyChangedSignal("Value"):Connect(function()
+		ProfileData.Amount = AmountValue.Value
+	end)
+end
+
 local LevelTarget = ProfileData.Stage or 1
 
 -- Track Character
@@ -61,10 +70,10 @@ Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(newChar
 end)
 
 -- Parse Upgrades
-if UpgradeScroll then
+if Interfaces.UpgradeScroll then
 	local sortUpgrades = {}
 
-	for _, layer in ipairs(UpgradeScroll:GetChildren()) do
+	for _, layer in ipairs(Interfaces.UpgradeScroll:GetChildren()) do
 		if layer and layer.Parent and layer:IsA("GuiObject") then
 			local frame = layer:FindFirstChild("1")
 			if not frame then continue end
@@ -124,7 +133,7 @@ for _, v1 in ipairs(workspace:GetChildren()) do
 					for _, v3 in ipairs(StageFolder:GetChildren()) do
 						if not (v3 and v3.Parent) then continue end
 						if v3.Name:find("关卡") then
-							MaxLevel += 1
+							ProfileData.MaxStage += 1
 						end
 					end
 					break 
@@ -216,7 +225,7 @@ local function HandleCash()
 
 	if not CashHitbox then
 		Enableds.Cash = false
-		if CashToggle then CashToggle:Replace(false) end
+		Interfaces.CashToggle:Replace(false)
 		return
 	end
 
@@ -234,7 +243,11 @@ end
 local function HandleClick()
 	if not Enableds.Click then return end
 	Packets.Click = Packets.Click or ReplicatedStorage.Remote.Event.Level["[C-S]Click"]
-
+	if not Packets.Click then
+		Enableds.Click = false
+		Interfaces.ClickToggle:Replace(false)
+		return
+	end
 	task.spawn(function()
 		while Enableds.Click do
 			Packets.Click:FireServer(ClickIndex)
@@ -244,13 +257,17 @@ local function HandleClick()
 	end)
 end
 
-local function HandleEquipBestFish()
-	if not Enableds.EquipBestFish then return end
-	Packets.EquipBestFish = Packets.EquipBestFish or ReplicatedStorage.Remote.Function.FishShow["[C-S]BestFishUI"]
-
+local function HandleEquip()
+	if not Enableds.Equip then return end
+	Packets.EquipBest = Packets.EquipBest or ReplicatedStorage.Remote.Function.FishShow["[C-S]BestFishUI"]
+	if not Packets.EquipBest then
+		Enableds.Equip = false
+		Interfaces.EquipToggle:Replace(false)
+		return
+	end
 	task.spawn(function()
-		while Enableds.EquipBestFish do
-			Packets.EquipBestFish:InvokeServer()
+		while Enableds.Equip do
+			Packets.EquipBest:InvokeServer()
 			task.wait(3)
 		end
 	end)
@@ -286,7 +303,11 @@ end
 local function HandleSell()
 	if not Enableds.Sell then return end
 	Packets.SellAll = Packets.SellAll or ReplicatedStorage.Remote.Function.Fish["[C-S]SellAllFish"]
-
+	if not Packets.SellAll then
+		Enableds.Sell = false
+		Interfaces.SellToggle:Replace(false)
+		return
+	end
 	task.spawn(function()
 		while Enableds.Sell do
 			Packets.SellAll:InvokeServer()
@@ -295,11 +316,11 @@ local function HandleSell()
 	end)
 end
 
-local function HandleHit()
-	if not Enableds.Hit then return end
-
+local function HandleStage()
+	if not Enableds.Stage then return end
+	Packets.GoHome = Packets.GoHome or ReplicatedStorage.Remote.Event.Level["[C-S]GoShow"]
 	task.spawn(function()
-		while Enableds.Hit do
+		while Enableds.Stage do
 			local level = ProfileData.Stage
 			local levelFolder = StageFolder:FindFirstChild("关卡"..tostring(level))
 
@@ -309,7 +330,7 @@ local function HandleHit()
 				local humanoid = Character:FindFirstChildOfClass("Humanoid")
 				local rootPart = Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
 
-				while Enableds.Hit and checkPart and checkPart.CanCollide and level < LevelTarget do
+				while Enableds.Stage and checkPart and checkPart.CanCollide and level < LevelTarget do
 					SuperPivoTo(Character, surfacePart, rootPart, humanoid.HipHeight)
 					task.wait()
 				end
@@ -339,64 +360,55 @@ local function HandleHit()
 									SpawnPoint = fishRoot,
 									Prompt = prompt,
 								})
-								task.wait(0.1)
+								task.wait()
 							end
 						end
 					end
 
-					if not Enableds.Hit then break end
+					if not Enableds.Stage then break end
 
 					table.sort(sortFishs, function(a, b)
 						return a.Tier > b.Tier
 					end)
 
-					local currentCapacity = 0
 					for _, info in ipairs(sortFishs) do
-						if not Enableds.Hit then break end
-
+						if not Enableds.Stage then break end
+						if ProfileData.Amount >= ProfileData.Capacity then
+							if Packets.GoHome then
+								Packets.GoHome:FireServer()
+							else
+								FireButton(Interfaces.HomeButton)
+							end
+							break
+						end
 						local spawnPoint, prompt = info.SpawnPoint, info.Prompt
 						SuperPivoTo(Character, spawnPoint, rootPart, humanoid.HipHeight)
 						task.wait(0.1)
 						FirePrompt(prompt)
-
-						if currentCapacity >= ProfileData.Capacity then
-							break
-						end
-						currentCapacity += 1
 						task.wait(0.1)
-					end
-
-					if currentCapacity >= ProfileData.Capacity and HomeButton then
-						FireButton(HomeButton)
 					end
 					table.clear(sortFishs)
 				end
 			end
 
-			task.wait(1)
+			task.wait()
 		end
 	end)
 end
 
-local function FireRebirth()
-	if IsFillFull(RebirthFill) and Enableds.Rebirth then
-		FireButton(RebirthButton)
-	end
-end
-
 local function HandleRebirth()
-	if Connections.Rebirth then Connections.Rebirth:Disconnect() Connections.Rebirth = nil end
 	if not Enableds.Rebirth then return end
-	RebirthFrame = RebirthFrame or (MainGui and MainGui:FindFirstChild("Rebirth+1water") and MainGui["Rebirth+1water"]:FindFirstChild("UI1") or nil)
-	if RebirthFrame then
-		RebirthFill = RebirthFill or (RebirthFrame:FindFirstChild("Progress bar") and RebirthFrame["Progress bar"]:FindFirstChild("Internal progress bar") or nil)
-		RebirthButton = RebirthButton or RebirthFrame:QueryDescendants("#RebirthButton > #TextButton")[1]
+	Interfaces.RebirthFrame = Interfaces.RebirthFrame or (Interfaces.MainGui and Interfaces.MainGui:FindFirstChild("Rebirth+1water") and Interfaces.MainGui["Rebirth+1water"]:FindFirstChild("UI1") or nil)
+	if Interfaces.RebirthFrame then
+		Interfaces.RebirthFill = Interfaces.RebirthFill or (Interfaces.RebirthFrame:FindFirstChild("Progress bar") and Interfaces.RebirthFrame["Progress bar"]:FindFirstChild("Internal progress bar") or nil)
+		Interfaces.RebirthButton = Interfaces.RebirthButton or Interfaces.RebirthFrame:QueryDescendants("#RebirthButton > #TextButton")[1]
 	end
-	Connections.Rebirth = RebirthFill:GetPropertyChangedSignal("Size"):Connect(FireRebirth)
 	task.spawn(function()
 		while Enableds.Rebirth do
-			FireRebirth()
-			task.wait(1)
+			if IsFillFull(Interfaces.RebirthFill) then
+				FireButton(Interfaces.RebirthButton)
+			end
+			task.wait(0.5)
 		end
 	end)
 end
@@ -416,10 +428,9 @@ local Window = UI:CreateWindow({
 	end
 })
 
-Window:AddToggle({
+Interfaces.ClickToggle = Window:AddToggle({
 	Text = "Level Up",
 	Value = false,
-	Flag = "click_enabled",
 	Callback = function(value)
 		Enableds.Click = value
 		HandleClick()
@@ -427,60 +438,54 @@ Window:AddToggle({
 })
 
 Window:AddSlider({
-	Text = "Checkpoint",
-	Range = {1, MaxLevel > 0 and MaxLevel or 1},
+	Text = "Stage",
+	Range = {1, ProfileData.MaxStage > 0 and ProfileData.MaxStage or 1},
 	Value = LevelTarget,
 	Increment = 1,
-	Flag = "checkpoint",
 	Callback = function(value)
 		LevelTarget = value
 	end
 })
 
-HitToggle = Window:AddToggle({
-	Text = "Auto Hit",
+Interfaces.StageToggle = Window:AddToggle({
+	Text = "Auto Stage",
 	Value = false,
-	Flag = "hit_enabled",
 	Callback = function(value)
-		Enableds.Hit = value
-		HandleHit()
+		Enableds.Stage = value
+		HandleStage()
 	end
 })
 
-CashToggle = Window:AddToggle({
+Interfaces.CashToggle = Window:AddToggle({
 	Text = "Collect Cash",
 	Value = false,
-	Flag = "cash_enabled",
 	Callback = function(value)
 		Enableds.Cash = value
 		HandleCash()
 	end
 })
 
-Window:AddToggle({
-	Text = "Equip Best Fish",
+Interfaces.EquipToggle = Window:AddToggle({
+	Text = "Equip Best",
 	Value = false,
-	Flag = "equip_best_fish_enabled",
 	Callback = function(value)
-		Enableds.EquipBestFish = value
-		HandleEquipBestFish()
+		Enableds.Equip = value
+		HandleEquip()
 	end
 })
 
 Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
-	Flag = "rebirth_enabled",
 	Callback = function(value)
 		Enableds.Rebirth = value
 		HandleRebirth()
 	end
 })
 
-Window:AddToggle({
+Interfaces.SellToggle = Window:AddToggle({
 	Text = "Auto Sell",
 	Value = false,
-	Flag = "sell_enabled",
 	Callback = function(value)
 		Enableds.Sell = value
 		HandleSell()
@@ -488,11 +493,10 @@ Window:AddToggle({
 })
 
 Window:AddDropdown({
-	Text = "Upgrade Type (Empty = All)",
+	Text = "Upgrade Type",
 	Options = #UpgradeTypes > 0 and UpgradeTypes or {"No Upgrade Type"},
 	Option = nil,
 	MultipleOptions = true,
-	Flag = "upgrade_options",
 	Callback = function(option)
 		for _, mode in ipairs(UpgradeTypes) do
 			UpgradeActives[mode] = table.find(option, mode) ~= nil
