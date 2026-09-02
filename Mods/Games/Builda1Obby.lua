@@ -13,7 +13,7 @@ local Cacheds={}
 
 local Packets={
 	["RequestPlot"]=ReplicatedStorage:QueryDescendants("#GameSystems > #Packages > #Networker >> #PlotService > #RemoteEvent")[1],
-    -- ReplicatedStorage.GameSystems.Packages.Networker["leifstout_networker@0.3.0"].networker._remotes.PlotService.RemoteEvent
+	-- ReplicatedStorage.GameSystems.Packages.Networker["leifstout_networker@0.3.0"].networker._remotes.PlotService.RemoteEvent
 }
 
 local Interfaces={
@@ -34,7 +34,7 @@ local TypeData={
 
 for _, key in ipairs(BuyTypes) do table.insert(TypeData.Upgrade,key) end
 
-local PlayerCache = {}
+local PlayerCache={}
 
 local ActiveData={
 	["Upgrade"]={
@@ -221,7 +221,7 @@ local function Cleanup(object)
 	return nil
 end
 
-local PlotsFolder = nil
+local PlotsFolder=nil
 
 local function GetPlots()
 	PlotsFolder=PlotsFolder or workspace:QueryDescendants("#Map > #Plots")[1]
@@ -229,10 +229,10 @@ local function GetPlots()
 	local results={}
 	for _,plot in ipairs(plots:GetChildren()) do
 		if plot and plot.Parent then
-		   local ownerName=plot:GetAttribute("Owner")
-		   if ownerName~=nil then
-			   table.insert(results,{["OwnerName"]=ownerName,["Instance"]=plot})
-		   end
+			local ownerName=plot:GetAttribute("Owner")
+			if ownerName~=nil then
+				table.insert(results,{["OwnerName"]=ownerName,["Instance"]=plot})
+			end
 		end
 	end
 	return results
@@ -249,17 +249,17 @@ end
 
 local LocalPlot=FindFirstPlot(LocalPlayer.Name)
 local CashHitbox=nil
-	
+
 local function HandleCash()
 	if not Enableds.Cash then return end
 	CashHitbox=CashHitbox or LocalPlot:QueryDescendants("#CollectAll > #PRIMARY")[1]
 	if not Packets.RequestPlot then
-		Enableds.Cash = false
+		Enableds.Cash=false
 		Interfaces.CashToggle:Replace(false)
 		return 
 	end
-	
-    task.spawn(function()
+
+	task.spawn(function()
 		while Enableds.Cash do
 			if Packets.RequestPlot then
 				Packets.RequestPlot:FireServer("Collect")
@@ -328,27 +328,27 @@ local function HandleUpgrade()
 end
 
 local function FireAllLike()
-		
+
 end
 local function HandleLike()
-	if Cacheds.LikeThread then Cacheds.LikeThread = Cleanup(Cacheds.LikeThread) end
+	if Cacheds.LikeThread then Cacheds.LikeThread=Cleanup(Cacheds.LikeThread) end
 	if not Enableds.Like then return end
-		
+
 	if not Packets.RequestPlot then 
-		Enableds.Like = false
+		Enableds.Like=false
 		Interfaces.LikeToggle:Replace(false)
 		return 
 	end
 
-	Cacheds.LikeThread = task.spawn(function()
+	Cacheds.LikeThread=task.spawn(function()
 		while Enableds.Like do
 			for _, info in ipairs(GetPlots()) do
-			   if not Enableds.Like then break end
-			   local player = Players:FindFirstChild(info.OwnerName)
-			   if player then
-				  Packets.RequestPlot:FireServer("LikePlot",player)
-				  task.wait()
-			   end
+				if not Enableds.Like then break end
+				local player=Players:FindFirstChild(info.OwnerName)
+				if player then
+					Packets.RequestPlot:FireServer("LikePlot",player)
+					task.wait()
+				end
 			end
 			task.wait(3)
 		end
@@ -381,7 +381,7 @@ local Window=UI:CreateWindow({
 	end
 })
 
-Interfaces.CashToggle = Window:AddToggle({
+Interfaces.CashToggle=Window:AddToggle({
 	Text="Collect Cash",
 	Value=false,
 	Callback=function(value)
@@ -402,7 +402,7 @@ Window:AddDropdown({
 		ActiveData.ASMRs.AllEnabled=#option<=0
 	end
 })
-  
+
 Window:AddDropdown({
 	Text="Part Type",
 	Options=#TypeData.Parts>0 and TypeData.Parts or {"No Part Type"},
@@ -438,7 +438,7 @@ Window:AddToggle({
 	end
 })
 
-Interfaces.LikeToggle = Window:AddToggle({
+Interfaces.LikeToggle=Window:AddToggle({
 	Text="Auto Like",
 	Value=false,
 	Callback=function(value)
