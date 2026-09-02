@@ -227,7 +227,7 @@ local function GetPlots()
 	PlotsFolder=PlotsFolder or workspace:QueryDescendants("#Map > #Plots")[1]
 	if not PlotsFolder then return {} end
 	local results={}
-	for _,plot in ipairs(plots:GetChildren()) do
+	for _,plot in ipairs(PlotsFolder:GetChildren()) do
 		if plot and plot.Parent then
 			local ownerName=plot:GetAttribute("Owner")
 			if ownerName~=nil then
