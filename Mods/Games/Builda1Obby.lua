@@ -34,6 +34,8 @@ local TypeData={
 
 for _, key in ipairs(BuyTypes) do table.insert(TypeData.Upgrade,key) end
 
+local PlayerCache = {}
+
 local ActiveData={
 	["Upgrade"]={
 		["AllEnabled"]=true,
@@ -202,18 +204,92 @@ local function Cleanup(object)
 		pcall(function() object() end)
 	elseif objectType=='RBXScriptConnection' then
 		object:Disconnect()
+	elseif objectType=='thread' then
+		local wasCancelled:boolean?=nil
+		if coroutine.running()~=object then
+			wasCancelled=pcall(function()
+				task.cancel(object)
+			end)
+		end
+		if not wasCancelled then
+			local toClean=object
+			task.defer(function()
+				task.cancel(toClean)
+			end)
+		end
 	end
 	return nil
 end
 
+local function ObservePlayer(callbak, noInitial)
+	local playerAddedConnection
+	local playerCache={}
+
+	local function OnPlayerRemoved(player)
+		local playerInfo=playerCache[player]
+		if playerInfo==nil then return end
+		playerCache[player]=nil
+		playerInfo.AncestryChanged:Disconnect()
+		local cleanup=playerInfo.Cleanup
+		if cleanup==nil or type(cleanup)~="function" then return end
+		task.spawn(cleanup,player)
+	end
+
+	local function OnPlayerAdded(player)
+		if playerAddedConnection.Connected and player~=nil and player.Parent~=nil then
+			local cleanup=callback(player)
+			if cleanup~=nil and type(cleanup)=="function" then 
+				if playerAddedConnection.Connected and player~=nil and player.Parent~=nil then
+					local playerInfo={["Cleanup"]=cleanup}
+					playerInfo.AncestryChanged=player.AncestryChanged:Connect(function(_,parent)
+						if not (parent~=nil and player:IsDescendantOf(Players)) then
+							OnPlayerRemoved(player)
+						end
+					end)
+					playerCache[player]=playerInfo
+				else
+					task.spawn(cleanup,player)
+				end
+			end
+		end
+	end
+
+	-- Listen for changes:
+	playerAddedConnection=Players.PlayerAdded:Connect(OnPlayerAdded)
+
+	-- Initial:
+	task.defer(function()
+		if not playerAddedConnection.Connected or noInitial then return end
+		local plrs=Players:GetPlayers()
+		for i,player in ipairs(plrs) do
+			if not playerAddedConnection.Connected then break end
+			task.defer(OnPlayerAdded,player)
+		end
+	end)
+
+	-- Cleanup:
+	return function()
+		playerAddedConnection:Disconnect()
+		local player=next(playerCache)
+		while player do
+			OnPlayerAdded(player)
+			player=next(playerCache)
+		end
+	end
+end
+
+local PlotsFolder = nil
+
 local function GetPlots()
-	local plots=workspace:QueryDescendants("#Map > #Plots")[1]
-	if not plots then return {} end
+	PlotsFolder=PlotsFolder or workspace:QueryDescendants("#Map > #Plots")[1]
+	if not PlotsFolder then return {} end
 	local results={}
 	for _,plot in ipairs(plots:GetChildren()) do
-		local ownerName=plot:GetAttribute("Owner")
-		if ownerName~=nil then
-			table.insert(results,{["OwnerName"]=ownerName,["Instance"]=plot})
+		if plot and plot.Parent then
+		   local ownerName=plot:GetAttribute("Owner")
+		   if ownerName~=nil then
+			   table.insert(results,{["OwnerName"]=ownerName,["Instance"]=plot})
+		   end
 		end
 	end
 	return results
@@ -231,6 +307,13 @@ end
 local LocalPlot=FindFirstPlot(LocalPlayer.Name)
 local CashHitbox=nil
 
+Cacheds.PlayerObserve = ObservePlayer(function(player)
+	PlayerCache[player] = {}
+	return function()
+		PlayerCache[player] = nil
+	end
+end
+	
 local function HandleCash()
 	if not Enableds.Cash then return end
 	CashHitbox=CashHitbox or LocalPlot:QueryDescendants("#CollectAll > #PRIMARY")[1]
@@ -308,12 +391,34 @@ local function HandleUpgrade()
 	end)
 end
 
+local function FireAllLike()
+		
+end
 local function HandleLike()
-	if not Packets.RequestPlot then return end
+	if not Enableds.Like then return end
+		
+	if not Packets.RequestPlot then 
+		Enableds.Like = false
+		Interfaces.LikeToggle:Replace(false)
+		return 
+	end
+
+	task.spawn(function()
+		while Enableds.Like do
+			for player in pairs(PlayerCache) do
+				if player and player.Parent do
+					Packets.RequestPlot:FireServer("LikePlot",player)
+				end
+				task.wait()
+			end
+			task.wait(3)
+		end
+	end)
+			
 	for _,info in ipairs(GetPlots()) do
 		local player=Players:FindFirstChild(info.OwnerName)
 		if player then
-			Packets.RequestPlot:FireServer("LikePlot",player)
+			
 		end
 		task.wait()
 	end
@@ -336,6 +441,11 @@ local Window=UI:CreateWindow({
 	Destroying=function()
 		for key,enabled in pairs(Enableds) do
 			Enableds[key]=false
+		end
+		for key,object in pairs(Cacheds) do
+			if object then
+				Cleanup(object)
+			end
 		end
 	end
 })
