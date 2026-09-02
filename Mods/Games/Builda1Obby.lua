@@ -221,63 +221,6 @@ local function Cleanup(object)
 	return nil
 end
 
-local function ObservePlayer(callbak, noInitial)
-	local playerAddedConnection
-	local playerCache={}
-
-	local function OnPlayerRemoved(player)
-		local playerInfo=playerCache[player]
-		if playerInfo==nil then return end
-		playerCache[player]=nil
-		playerInfo.AncestryChanged:Disconnect()
-		local cleanup=playerInfo.Cleanup
-		if cleanup==nil or type(cleanup)~="function" then return end
-		task.spawn(cleanup,player)
-	end
-
-	local function OnPlayerAdded(player)
-		if playerAddedConnection.Connected and player~=nil and player.Parent~=nil then
-			local cleanup=callback(player)
-			if cleanup~=nil and type(cleanup)=="function" then 
-				if playerAddedConnection.Connected and player~=nil and player.Parent~=nil then
-					local playerInfo={["Cleanup"]=cleanup}
-					playerInfo.AncestryChanged=player.AncestryChanged:Connect(function(_,parent)
-						if not (parent~=nil and player:IsDescendantOf(Players)) then
-							OnPlayerRemoved(player)
-						end
-					end)
-					playerCache[player]=playerInfo
-				else
-					task.spawn(cleanup,player)
-				end
-			end
-		end
-	end
-
-	-- Listen for changes:
-	playerAddedConnection=Players.PlayerAdded:Connect(OnPlayerAdded)
-
-	-- Initial:
-	task.defer(function()
-		if not playerAddedConnection.Connected or noInitial then return end
-		local plrs=Players:GetPlayers()
-		for i,player in ipairs(plrs) do
-			if not playerAddedConnection.Connected then break end
-			task.defer(OnPlayerAdded,player)
-		end
-	end)
-
-	-- Cleanup:
-	return function()
-		playerAddedConnection:Disconnect()
-		local player=next(playerCache)
-		while player do
-			OnPlayerAdded(player)
-			player=next(playerCache)
-		end
-	end
-end
-
 local PlotsFolder = nil
 
 local function GetPlots()
@@ -306,13 +249,6 @@ end
 
 local LocalPlot=FindFirstPlot(LocalPlayer.Name)
 local CashHitbox=nil
-
-Cacheds.PlayerObserve = ObservePlayer(function(player)
-	PlayerCache[player] = {}
-	return function()
-		PlayerCache[player] = nil
-	end
-end
 	
 local function HandleCash()
 	if not Enableds.Cash then return end
@@ -395,6 +331,7 @@ local function FireAllLike()
 		
 end
 local function HandleLike()
+	if Cacheds.LikeThread then Cacheds.LikeThread = Cleanup(Cacheds.LikeThread) end
 	if not Enableds.Like then return end
 		
 	if not Packets.RequestPlot then 
@@ -403,25 +340,19 @@ local function HandleLike()
 		return 
 	end
 
-	task.spawn(function()
+	Cacheds.LikeThread = task.spawn(function()
 		while Enableds.Like do
-			for player in pairs(PlayerCache) do
-				if player and player.Parent do
-					Packets.RequestPlot:FireServer("LikePlot",player)
-				end
-				task.wait()
+			for _, info in ipairs(GetPlots()) do
+			   if not Enableds.Like then break end
+			   local player = Players:FindFirstChild(info.OwnerName)
+			   if player then
+				  Packets.RequestPlot:FireServer("LikePlot",player)
+				  task.wait()
+			   end
 			end
 			task.wait(3)
 		end
 	end)
-			
-	for _,info in ipairs(GetPlots()) do
-		local player=Players:FindFirstChild(info.OwnerName)
-		if player then
-			
-		end
-		task.wait()
-	end
 end
 
 local function HandleRebirth()
@@ -507,9 +438,13 @@ Window:AddToggle({
 	end
 })
 
-Window:AddButton({
-	Text="Like",
-	Callback=HandleLike
+Interfaces.LikeToggle = Window:AddToggle({
+	Text="Auto Like",
+	Value=false,
+	Callback=function(value)
+		Enableds.Like=value
+		HandleLike()
+	end
 })
 
 Window:AddToggle({
