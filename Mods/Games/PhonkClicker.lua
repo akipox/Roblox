@@ -78,7 +78,7 @@ if Interfaces.UpgradeScroll then
 				table.insert(sortUpgrades, {
 					["Name"] = key,
 					["Tier"] = layer.LayoutOrder,
-					["UpgradeButton"] = button,
+					["Button"] = button,
 					["LockedFrame"] = lockedFrame,
 				})
 			end
