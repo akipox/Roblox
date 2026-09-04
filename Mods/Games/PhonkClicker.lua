@@ -180,11 +180,10 @@ Window:AddToggle({
 					local active = ActiveData.Upgrade[info.Name]
 					if info ~= nil and (active or ActiveData.Upgrade.AllEnabled) then
 						local lockedFrame = info.LockedFrame
-						if lockedFrame and lockedFrame.Visible == true then return end
+						if lockedFrame.Visible == true then continue end
 						local button = info.Button
-						if button and button.ImageColor3 ~= Values.FailColor then 
-							FireButton(button)
-						end
+						if button.ImageColor3 == Values.FailColor then continue end
+						FireButton(button)
 					end
 					task.wait()
 				end
