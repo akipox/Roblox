@@ -129,13 +129,13 @@ end
 local Window = UI:CreateWindow({
 	Name = "Save Your Cat",
 	Destroying = function()
+		for key, enabled in pairs(Enableds) do
+			Enableds[key] = false
+		end
 		for key, connection in pairs(Connections) do
 			if connection then
 				connection:Disconnect()
 			end
-		end
-		for key, enabled in pairs(Enableds) do
-			Enableds[key] = false
 		end
 	end
 })
