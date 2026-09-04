@@ -22,7 +22,7 @@ local Values = {
 
 local TypeData = {
 	["Upgrade"] = {},
-	["Code"] = {},
+	["Code"] = {}
 }
 
 local ActiveData = {
@@ -144,8 +144,8 @@ Window:AddToggle({
 		task.spawn(function()
 			while Enableds.Click do
 				if Interfaces.AutoClickButton and Interfaces.AutoClickTimeLabel and Interfaces.AutoClickTimeLabel.Text == "Ready" then
+					task.wait(1.5)
 					FireButton(Interfaces.AutoClickButton)
-					task.wait(0.1)
 				end
 				Packets.Click:FireServer(1)
 				task.wait()
@@ -161,7 +161,7 @@ Window:AddDropdown({
 	MultipleOptions = true,
 	Callback = function(option)
 		for _, mode in ipairs(TypeData.Upgrade) do
-			ActiveData.Upgrade[mode] = table.find(option, mode) ~= nil and true or false
+			ActiveData.Upgrade[mode] = table.find(option, mode) ~= nil
 		end
 		ActiveData.Upgrade.AllEnabled = #option <= 0
 	end
@@ -183,7 +183,7 @@ Window:AddToggle({
 						if lockedFrame and lockedFrame.Visible == true then return end
 						local button = info.Button
 						if button then 
-							if button.ImageColor3 == Values.UpgradeFailColor then return end
+							if button.ImageColor3 == Values.FailColor then return end
 							FireButton(button)
 						end
 					end
