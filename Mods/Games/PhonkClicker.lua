@@ -182,8 +182,7 @@ Window:AddToggle({
 						local lockedFrame = info.LockedFrame
 						if lockedFrame and lockedFrame.Visible == true then return end
 						local button = info.Button
-						if button then 
-							if button.ImageColor3 == Values.FailColor then return end
+						if button and button.ImageColor3 ~= Values.FailColor then 
 							FireButton(button)
 						end
 					end
