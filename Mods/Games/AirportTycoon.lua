@@ -201,17 +201,3 @@ Window:AddLabel({
 	Text = "YouTube: Crokyreo",
 	TextColor3 = Color3.fromRGB(255, 255, 255)
 })
-
---[[
-game:GetService("Players").LocalPlayer.PlayerGui.UI.Menus.Upgrades.Pages.Options.ScrollingFrame.SecurityLane.ImageButton
-game:GetService("Players").LocalPlayer.PlayerGui.UI.Menus.Upgrades.Pages.Options.ScrollingFrame.SecurityLane.GateName.Text
-game:GetService("Players").LocalPlayer.PlayerGui.UI.Menus.Upgrades.Pages.Options.Back
-
-game:GetService("Players").LocalPlayer.PlayerGui.UI.Menus.Upgrades.Pages.Upgrade.Back
-game:GetService("Players").LocalPlayer.PlayerGui.UI.Menus.Upgrades.Pages.Upgrade.Upgrade
-
--- Teash
-workspace.AirportTycoonTrash
-workspace.AirportTycoonTrash.Trash_3_4291.Sphere.CleanTrashPrompt
-workspace.AirportTycoonTrash.Trash_3_4300.Sphere
-]]
