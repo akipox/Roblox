@@ -11,7 +11,7 @@ local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
 local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Rebirth"] = false}
-
+local Modules = {}
 local Values = {
 	["ClickPoint"] = Vector2.new(500, 500),
 	["RebirthDebounce"] = false,
@@ -40,8 +40,6 @@ local Packets = {
 	["Rebirth"] = ReplicatedStorage:QueryDescendants("#Remotes > #Rebirth")[1],
 	["RedeemCode"] = ReplicatedStorage:QueryDescendants("#Remotes > #RedeemCode")[1]
 }
-
-local Modules = {}
 
 local Interfaces = {
 	["LuckyBlockFrame"] = PlayerGui:QueryDescendants("#Main > #LuckyRewardFrame")[1],
