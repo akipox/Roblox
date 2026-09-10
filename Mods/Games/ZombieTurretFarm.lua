@@ -1,1 +1,431 @@
-return(function(...)local p={"\050\049\105\047\057\077\117\074\113\084\107\097\075\085\113\112\068\100\061\061","\068\049\109\069\105\115\061\061","\103\106\117\116\109\104\077\049\122\089\048\086\075\084\110\090\077\079\061\061","","\089\086\077\105\113\104\079\069\056\051\114\109\113\121\113\072\057\114\105\061","\051\085\053\082\056\069\072\084\075\051\066\067\050\097\118\121\105\049\048\061";"\118\085\077\066\050\049\068\117";"\103\090\115\117\068\083\087\072\103\115\061\061","\105\047\052\099\105\047\114\086";"\077\097\114\066\118\097\077\043\048\080\113\117\107\097\077\111\107\097\077\055\048\067\061\061";"\105\047\120\120\118\115\061\061","\056\085\120\085\075\097\107\075\068\085\071\053\109\055\114\116","\122\084\113\086\118\080\107\117\107\100\061\061","\107\051\074\079\105\051\109\108","\076\069\052\073\105\079\061\061";"\118\049\113\043\075\051\074\073";"\057\117\117\085\051\085\077\048\104\069\114\054\109\051\109\068\107\104\086\061","\050\097\052\120\068\084\109\086\118\085\117\099\068\079\061\061";"\050\104\052\065\113\047\066\077\118\085\052\114\113\055\069\078","\109\085\072\076\050\111\110\068\103\084\110\072\089\084\056\053\056\121\055\061";"\067\121\105\069\089\086\107\110\118\051\066\066\077\055\072\074","\104\076\068\114\109\114\109\090\105\073\077\048\105\085\088\061","\050\050\122\073\052\109\109\098\052\083\056\075\114\071\076\102\054\066\080\061";"\118\085\114\099\068\097\052\066";"\078\067\102\120\097\079\061\061","\118\047\077\086\050\051\077\086\105\076\113\120\105\085\053\117";"\050\097\077\099";"\118\085\069\110\057\114\109\054\122\077\068\114\067\051\113\049\109\106\048\061";"\100\077\080\061","\067\081\100\089\083\099\114\107\086\052\052\073\079\114\048\104\048\085\070\054\120\118\070\113\074\103\105\122\121\112\081\065\072\107\087\097\088\097\107\107\078\114\049\119\066\114\112\105\074\088\043\065\083\113\066\114\107\102\108\070\080\071\047\050\076\081\086\057\069\055\047\114\078\050\121\116\078\090\071\077\102\079\050\069\109\112\115\079\069\103\106\113\070\107\081\109","\068\085\053\054\050\049\048\061";"\050\106\080\061";"\075\104\087\047\122\076\067\121\104\069\112\122\109\049\117\089","\107\097\052\099\107\051\069\090\068\076\048\061";"\068\047\069\120\107\097\109\087";"\107\097\114\090\050\097\104\061";"\047\047\057\076\084\083\110\098\082\103\099\117\074\077\105\115\115\074\067\114\057\098\069\068";"\068\076\112\043\050\049\048\061";"\103\115\061\061";"\118\097\109\120\050\097\079\061";"\047\050\112\072\101\047\070\089\086\084\122\121\049\112\079\049";"\068\047\114\066\068\067\061\061","\050\051\114\086\075\100\061\061","\067\104\072\078\109\047\052\120\122\077\117\112\113\049\056\069\109\115\061\061","\107\097\052\121\107\084\112\072\050\085\118\061";"\076\069\052\072\050\085\113\117\057\100\061\061";"\105\073\117\086\068\067\061\061","\076\069\052\066\068\076\113\120\107\097\114\090\050\097\104\061";"\050\106\077\090\118\069\048\053\109\121\107\098\056\055\112\075\122\115\061\061","\050\106\048\061";"\076\069\052\088\068\051\071\061","\068\047\077\086\068\047\077\099\107\115\061\061";"\050\111\048\043\075\117\107\054\050\051\105\049\104\073\120\097\050\067\061\061"}local function j(j)return p[j+(-1021991+1026544)]end for j,P in ipairs({{-667259+667260,804942+-804889},{762450-762449;771717+-771698},{-695179+695199;850649-850596}})do while P[833934+-833933]<P[653083+-653081]do p[P[818726+-818725]],p[P[427286-427284]],P[-321432-(-321433)],P[210372+-210370]=p[P[-331640+331642]],p[P[10537+-10536]],P[206981+-206980]+(-302532+302533),P[-737899-(-737901)]-(772784+-772783)end end do local j=string.len local P=p local m={J=284057-284000,["\050"]=321036-321009,["\053"]=-442964-(-443013);U=812767+-812729,D=35922+-35897;k=-425490+425519;W=933469+-933429,O=179879-179831;j=-107633-(-107636),A=-880242+880300,["\054"]=-792241-(-792288);q=-535080-(-535097),h=-1004413-(-1004433),w=978732+-978670,K=-797775-(-797801);V=-509263-(-509315);l=33220+-33177,R=-471696+471706,Y=-504709-(-504728),s=-286688-(-286720);["\055"]=-795856-(-795892);["\049"]=-573407+573462,y=-909614+909665;g=-285308+285322,a=273314-273308,u=815330-815293;["\048"]=1046680-1046672,z=300568+-300550;N=-770351-(-770393),P=753572-753568,L=-590293-(-590316),Z=806308+-806274;f=-41056+41116,v=112253+-112225,["\043"]=839674+-839624;["\051"]=95365+-95343,m=-348862+348875,H=-432511+432552,c=351505+-351459;M=-628766-(-628787),X=1033427-1033383,t=-585756+585767,["\056"]=-537696-(-537708);F=699929+-699866;x=-465525+465558;e=-557619+557678;["\057"]=-636326+636356,r=-426442-(-426447),B=-628456+628501,["\047"]=-571260+571314,b=-321384+321399;d=687093+-687093,I=723806+-723767;Q=99243+-99212,C=-465741+465757,o=-677933+677968,n=223322+-223321;p=639899-639890,E=470554-470501;["\052"]=755400-755339,i=-265475+265499,G=379904-379848,S=-477626+477628;T=-60232+60239}local O=table.concat local Z=string.char local h=type local l=math.floor local N=string.sub local E=table.insert for p=-198708+198709,#P,-159508+159509 do local e=P[p]if h(e)=="\115\116\114\105\110\103"then local h=j(e)local I={}local F=-261876+261877 local L=-148154+148154 local y=-66176-(-66176)while F<=h do local p=N(e,F,F)local j=m[p]if j then L=L+j*(-40187-(-40251))^((-1014198-(-1014201))-y)y=y+(-127178+127179)if y==-988576-(-988580)then y=-531096-(-531096)local p=l(L/(179571-114035))local j=l((L%(659877+-594341))/(-671925-(-672181)))local P=L%(-668253-(-668509))E(I,Z(p,j,P))L=-392233+392233 end elseif p=="\061"then E(I,Z(l(L/(-100174+165710))))if F>=h or N(e,F+(416597-416596),F+(-554247-(-554248)))~="\061"then E(I,Z(l((L%(-27200-(-92736)))/(417359+-417103))))end break end F=F+(791083+-791082)end P[p]=O(I)end end end return(function(p,m,O,Z,h,l,N,F,I,i,P,k,b,E,y,r,w,Y,e,L)e,E,F,P,b,i,L,w,I,r,k,Y,y={},{},593263-593263,function(P,O,Z,h)local F,g,S,V,W,s,U,A,G,b,y,e,C,t,x,o,J,L,f,c,n,D,T,z,M,u,a,q,H,R,Q,X,N,B while P do if P<9179914-365662 then if P<35134+5287489 then if P<2188350-(-724518)then if P<-53099+1553640 then if P<1247787-129977 then if P<1067016-184210 then if P<1196912-635564 then P=true P=P and-541237+8061875 or 14270340-229625 else e=j(-899729+895227)N=j(904650-909187)P=p[N]N=p[e]e=j(507439-511941)p[e]=P e=j(-577411+572874)p[e]=N e=E[Z[446641-446640]]F=e()P=679450+8956731 end else L=E[Z[-580355+580364]]F=153517-153516 P={}y=L L=-1012161-(-1012162)b=L e=P L=-887350-(-887350)P=2401979-762194 q=b<L L=F-b end else if P<-702646+2009244 then E[Z[773220-773215]]=N P=40863+2344146 e=nil else e=j(-499296+494747)L=854599-854599 P=p[e]F=E[Z[-150364-(-150372)]]e=P(F,L)P=-111368+1186335 end end else if P<3153129-630047 then if P<-905137+3112464 then x=not q L=L+b F=L<=y F=x and F x=L>=y x=q and x F=x or F x=70490+16119448 P=F and x F=-487453+16330714 P=P or F else P=E[Z[-132671+132678]]P=P and 2184233-849553 or 840786-(-234181)end else if P<2563403-(-22262)then G=-908799+908800 X=#Q C=y(G,X)u=267902+-267901 G=q(Q,C)C=nil X=E[s]V=G-u P=-4138+3289136 D=x(V)X[G]=D G=nil else W=T==s A=W P=603722+6917973 end end end else if P<325912+4431908 then if P<-845902+4734889 then if P<2186850-(-1037947)then if P<30416+3074871 then P=1238306-1032615 else R=P o=-963727-(-963728)g=f[o]o=false n=g==o M=n P=n and 6726792-(-305941)or 3857386-(-845762)end else X=-340535-(-340535)G=#Q C=G==X P=C and 8558440-(-654419)or-340457+2892023 end else if P<-495526+4917882 then P=true P=14912991-(-515414)else P=R N=M P=13199039-389411 end end else if P<4168280-(-970995)then if P<3820166-(-996070)then P=N and 13673996-741991 or 2106049-(-278960)else R=E[F]P=R and-288323+6539046 or 15451147-510431 M=R end else if P<4510001-(-649944)then q=nil y=nil x=nil P=12647235-(-1022030)else P=-764055+10400236 end end end end else if P<-125211+7232726 then if P<11272+6521175 then if P<272776+6054378 then if P<-690607+6500426 then if P<-54617+5646078 then N={}P=true E[Z[-349356+349357]]=P P=p[j(-1050877-(-1046362))]else Q=j(576915+-581466)s=p[Q]Q=j(-1042538+1038018)P=14486130-(-332324)T=s[Q]B=T end else n=798854+-798853 R=f[n]M=R P=-138116+15078832 end else if P<6216516-(-247335)then L=608019-608018 F=E[Z[-376622-(-376625)]]e=F~=L P=e and 14627581-9626 or 1038950+6483169 else F=j(179981+-184493)L=14023131-868079 N=-136083+10298003 e=F^L P=N-e N=j(259375-263889)e=P P=N/e N={P}P=p[j(133468+-137974)]end end else if P<7577952-591057 then if P<6883264-164487 then e=E[Z[136749-136748]]N=#e e=1023904-1023904 P=N==e P=P and-83388+9193503 or-867786+7965102 else P=14362221-692956 end else if P<-486212+7550542 then o=-922376-(-922378)g=f[o]o=E[t]n=g==o P=487690+4215458 M=n else L=j(572410-576961)F=p[L]L=j(541952-546479)e=F[L]L=E[Z[-1001093-(-1001094)]]P=p[j(187274+-191812)]F={e(L)}N={m(F)}end end end else if P<-758547+8280248 then if P<-649046+8152556 then if P<7447531-223240 then if P<-828152+7981946 then A=A+H D=not X N=A<=W N=D and N D=A>=W D=X and D N=D or N D=16254087-710232 P=N and D N=-120768+7669005 P=P or N else P=1034392+-828701 end else B=I()T=-66830-(-66895)C=r(181539+6303174,{})J=-751233-(-751236)E[B]=N P=E[x]N=P(J,T)J=I()E[J]=N Q=j(641046-645593)P=-585709+585709 H=j(766005-770547)T=P N=p[Q]Q={N(C)}P=262823+-262823 N=156362+-156360 s=P P={m(Q)}Q=P P=Q[N]C=P N=j(767583+-772083)P=p[N]G=E[L]W=p[H]H=W(C)W=j(308956+-313482)A=G(H,W)G={A()}N=P(m(G))G=I()E[G]=N N=-506177+506178 A=E[J]W=A A=410466-410465 H=A A=-456610-(-456610)X=H<A A=N-H P=890255+6224012 end else if P<-596839+8117834 then X=944122-944116 H=-788096-(-788097)P=E[x]W=P(H,X)X=j(674378-678915)P=j(295007+-299544)p[P]=W H=p[X]X=-79693-(-79695)P=H>X P=P and 803211+14617917 or-306514+9319259 else E[F]=A P=E[F]P=P and 9787006-625526 or 34448+3903562 end end else if P<192508+7823252 then if P<7585277-39431 then F=E[Z[941120-941117]]L=-872438-(-872583)e=F*L F=49364-49107 N=e%F P=590178+5783435 E[Z[-656018-(-656021)]]=N else W=E[F]A=W P=W and 3184239-580909 or 287208+7234487 end else if P<8078429-(-339778)then M=E[F]N=M P=M and 2368331-(-843365)or-485209+13294837 else q=E[b]P=-200035+15751781 N=q end end end end end else if P<187160+13523696 then if P<-266068+11696976 then if P<837642+8564560 then if P<9924796-714971 then if P<10042243-920129 then if P<1030747+8057329 then X=j(-209443-(-204906))P=p[X]X=j(564523-569025)p[X]=P P=-339982+7562598 else L=855724-855707 F=E[Z[800892-800890]]e=F*L F=5683310542293-439166 N=e+F F=-491701-(-491702)e=-529305+35184372618137 P=N%e E[Z[-63920+63922]]=P P=992238+6529881 e=E[Z[922593-922590]]N=e~=F end else P=-587484+16603168 end else if P<10207503-905742 then f=j(-1012407+1007868)u={}Q=nil C={}D=I()V=j(-312834-(-308326))G=I()X=k(7534044-929609,{G;B;J;b})E[G]=C C=I()E[C]=X z=nil x=nil X={}T=nil b=i(b)b=j(-154630-(-150095))c=j(-194242-(-189701))E[D]=X P=p[j(-257664+253151)]q=nil Q=277769+28124083336735 n=nil x=j(931117+-935663)X=p[V]y=nil t=E[D]T=25687934415607-(-736194)z=-291769+26302886470545 a={[c]=t,[f]=n}V=X(u,a)X=Y(10814211-269715,{D,G;s;B,J,C})G=i(G)C=i(C)y=p[b]F=X s=i(s)s=618761+5936774797763 B=i(B)b=y()q=F(x,z)J=i(J)J=329867+662198827177 L=V D=i(D)y=L[q]B=j(993326+-997835)z=F(B,J)J=j(255041+-259591)x=L[z]B=F(J,T)T=j(911278+-915783)z=L[B]J=F(T,s)B=L[J]s=j(623231-627742)T=F(s,Q)J=L[T]q={[x]=z,[B]=J}T=-72984+4898331223552 x=j(-286493-(-281948))b[y]=q b=j(432019-436535)J=j(644565-649069)y=p[b]q=p[x]B=F(J,T)z=L[B]B=j(810842+-815363)F=nil B=q[B]N={}x={B(q,z)}b=y(m(x))L=nil y=b()else e=O P=true F=I()L=j(692-5210)y=I()E[F]=P N=p[L]L=j(-346835+342283)P=N[L]L=I()b=I()E[L]=P P=r(10669277-(-788382),{})E[y]=P z=r(-288258+5830360,{b})x=j(404+-4951)P=false E[b]=P q=p[x]x=q(z)P=x and 9222837-516008 or 14550624-(-1001122)N=x end end else if P<-734194+10514358 then if P<9666194-34300 then P=85437+4711970 F=E[Z[343977-343975]]L=E[Z[-377761-(-377764)]]e=F==L N=e else P=true P=P and 1682584-845845 or 13256664-(-385367)end else if P<10516645-(-35175)then P=E[Z[850772+-850771]]L=P F=O[324538-324536]e=O[706412+-706411]P=L[F]P=P and-383966+7240761 or 1039859+12024710 else J=J+T Q=not s z=J<=B z=Q and z Q=J>=B Q=s and Q z=Q or z Q=13628782-834850 P=z and Q z=-760858+5914275 P=P or z end end end else if P<12175698-(-861236)then if P<12531660-(-276412)then if P<13083528-932855 then if P<187753+11296991 then N=j(1042272-1046821)P=p[N]e=j(426920-431444)N=P(e)P=p[j(-389325-(-384792))]N={}else D=i(D)t=i(t)a=i(a)u=i(u)f=nil c=i(c)V=i(V)P=7677122-562855 end else H=j(-580410+575892)z=J W=p[H]H=j(-535744+531204)A=W[H]W=A(e,z)A=E[Z[642409-642403]]P=598495+10808496 H=A()G=W+H C=G+q G=-442764+443020 Q=C%G G=L[F]z=nil H=-457577+457578 q=Q W=q+H A=y[W]C=G..A L[F]=C end else if P<954212+11916903 then E[F]=N P=791780+11156880 else N=j(-9326+4826)z=j(393620-398167)y=j(1003567+-1008109)B=k(354586+13149651,{})P=p[N]e=E[Z[-427718-(-427722)]]L=p[y]x=p[z]z={x(B)}q={m(z)}x=-194792-(-194794)b=q[x]y=L(b)L=j(1012982+-1017508)F=e(y,L)e={F()}N=P(m(e))F=E[Z[-632013-(-632018)]]e=N N=F P=F and 456093+14221305 or 65955+1205017 end end else if P<-341385+13933493 then if P<-723919+14086189 then b=35184371869206-(-219626)P={}z=j(516923-521441)E[Z[328090-328088]]=P N=E[Z[-271691+271694]]y=N N=F%b x=-944458+944713 E[Z[500683+-500679]]=N q=F%x J=380896-380895 x=499106-499104 b=q+x E[Z[-180362+180367]]=b x=p[z]z=j(-359112+354605)q=x[z]T=J x=q(e)q=j(-113556+109026)z=-680423-(-680424)L[F]=q q=200449+-200294 P=12292548-885557 J=-813135+813135 B=x s=T<J J=z-T else F=j(747915+-752458)L=15509904-(-783712)N=963260+15578486 e=F^L P=N-e N=j(325078-329600)e=P P=N/e N={P}P=p[j(855043+-859544)]end else if P<13273008-(-383691)then N={}P=p[j(-383742+379211)]else P=p[j(591277+-595794)]N={F}end end end end else if P<14578200-(-785347)then if P<-559185+15251671 then if P<82768+14460817 then if P<-584464+15041338 then if P<-942127+15367177 then P=p[j(921269+-925798)]N={}else P=576914+6657159 J=j(863755+-868275)B=p[J]N=B end else G=G+D C=G<=X u=not V C=u and C u=G>=X u=V and u C=u or C u=-528517+17035096 P=C and u C=14505754-(-568084)P=P or C end else if P<15371097-735803 then F=E[Z[-398355-(-398358)]]B=-121067+121069 T=867531-867518 L=-977362-(-977394)e=F%L y=E[Z[-132235+132239]]x=E[Z[365133-365131]]C=E[Z[549627-549624]]P=7796847-699531 Q=C-e C=-471056-(-471088)s=Q/C J=T-s z=B^J q=x/z b=y(q)y=4294187923-(-779373)L=b%y b=134364-134362 y=b^e F=L/y z=425578-425577 y=E[Z[-159347+159351]]x=F%z z=4295200390-233094 q=x*z b=y(q)e=nil x=385892+-320356 y=E[Z[665464-665460]]q=y(F)L=b+q b=-845852-(-911388)y=L%b q=L-y b=q/x x=687301-687045 q=y%x z=y-q F=nil B=-366546+366802 T=-686731-(-686987)y=nil x=z/B B=-543114+543370 z=b%B L=nil J=b-z B=J/T b=nil J={q,x;z,B}E[Z[1030030+-1030029]]=J q=nil z=nil x=nil B=nil else L=E[Z[574112-574106]]P=-274198+1545170 F=L==e N=F end end else if P<15650850-804579 then if P<988134+13733845 then y=684032-684031 F=E[Z[-885717+885718]]b=22774-22772 L=F(y,b)F=-339417-(-339418)e=L==F N=e P=e and 5710366-912959 or 9112596-(-433580)else N=B P=J P=B and 6312970-(-921103)or 859848+13573618 end else if P<14847406-(-180704)then S=534336+-534335 E[F]=M o=E[a]g=o+S n=f[g]R=T+n n=1016425+-1016169 P=R%n T=P g=E[u]n=s+g g=-451003+451259 R=n%g P=11153651-(-795009)s=R else X=749015+-749015 G=#Q C=G==X P=1724278-(-827288)end end end else if P<16547346-606725 then if P<-377438+15921635 then if P<16500585-1006960 then if P<608313+14813691 then D=j(483458-487960)H=j(948038+-952580)P=p[H]X=p[D]H=P(X)P=j(-607247+602710)p[P]=H P=758826+6463790 else P=w(-739948+5918125,{y})W={P()}P=p[j(-193560+189032)]N={m(W)}end else D=I()E[D]=A u=226888+-226788 V=j(-267855-(-263311))N=p[V]V=j(-272025-(-267515))P=N[V]U=396469-386469 V=860723-860722 N=P(V,u)a=112357+-112102 u=-636250-(-636250)t=398430+-398429 V=I()S=766877+-766877 E[V]=N P=E[x]N=P(u,a)u=I()E[u]=N a=-85575-(-85576)P=E[x]c=E[V]N=P(a,c)a=I()f=622210+-622208 E[a]=N N=E[x]c=N(t,f)N=-385520-(-385521)P=c==N n=j(-821138-(-816596))c=I()f=j(32552+-37100)N=j(178853+-183379)E[c]=P R=p[n]g=E[x]o={g(S,U)}n=R(m(o))R=j(-680810-(-676262))P=j(-524326+519794)M=n..R P=C[P]t=f..M f=j(453306-457853)P=P(C,N,t)t=I()E[t]=P N=p[f]M=w(-944166+15652397,{x,D;J,L;F,G;c,t;V;a,u;B})f={N(M)}P={m(f)}f=P P=E[c]P=P and 8415910-358718 or 685466+4193626 end else if P<16110989-513976 then x=j(-600908+596364)s=j(369039-373590)q=N N=p[x]x=j(-285723-(-281213))P=N[x]z=j(-862639-(-858088))x=I()E[x]=P N=p[z]z=j(-90710+86185)P=N[z]J=P T=p[s]B=T z=P P=T and 6544108-750820 or 15813785-995331 else P=E[Z[166178-166168]]F=E[Z[890572-890561]]e[P]=F P=E[Z[-582082+582094]]F={P(e)}N={m(F)}P=p[j(-758194+753660)]end end else if P<808508+15214154 then if P<872137+15143680 then P=14318456-(-196487)y=i(y)Q=nil q=nil T=nil J=i(J)L=i(L)x=i(x)s=nil Q={}L=nil C=nil B=i(B)q=j(425433+-429977)z=nil B=j(709239+-713757)F=i(F)x=j(-684272+679728)G=i(G)T={}b=i(b)F=nil C=974080+-974079 b=p[q]q=j(-461782+457279)z=j(-484609-(-480058))y=b[q]b=I()E[b]=y q=p[x]x=j(532694-537204)s=I()y=q[x]x=p[z]J=I()z=j(-953739+949212)q=x[z]z=p[B]G=-181916-(-182172)B=j(-581816-(-577293))x=z[B]B=I()z=39755-39755 E[B]=z z=-912596-(-912598)E[J]=z z={}E[s]=T X=G T=-265057-(-265057)G=-128957+128958 D=G G=435455-435455 V=D<G G=C-D else P=true P=P and 2574443-(-429612)or 14530082-(-898323)end else if P<16102463-(-117946)then B=888197+-887942 F=L z=89224+-89224 P=E[Z[270017+-270016]]x=P(z,B)e[F]=x P=1930203-290418 F=nil else P=13597223-(-917720)C=G u=C Q[C]=u C=nil end end end end end end end P=#h return m(N)end,function(p,j)local m=L(j)local O=function(...)return P(p,{...},j,m)end return O end,function(p)e[p]=e[p]-(364641-364640)if e[p]==839168-839168 then e[p],E[p]=nil,nil end end,function(p)for j=-893601+893602,#p,433028-433027 do e[p[j]]=(-441357+441358)+e[p[j]]end if O then local P=O(true)local m=h(P)m[j(160966-165507)],m[j(-690306-(-685787))],m[j(-577827-(-573291))]=p,y,function()return-484915+3109235 end return P else return Z({},{[j(-581987-(-577468))]=y,[j(867398+-871939)]=p;[j(960661+-965197)]=function()return 2129721-(-494599)end})end end,function(p,j)local m=L(j)local O=function(O,Z,h,l,N)return P(p,{O;Z;h,l,N},j,m)end return O end,function()F=(-107656-(-107657))+F e[F]=-880960-(-880961)return F end,function(p,j)local m=L(j)local O=function(O)return P(p,{O},j,m)end return O end,function(p,j)local m=L(j)local O=function(O,Z)return P(p,{O;Z},j,m)end return O end,function(p,j)local m=L(j)local O=function(O,Z,h,l)return P(p,{O,Z,h;l},j,m)end return O end,function(p)local j,P=654390-654389,p[499310+-499309]while P do e[P],j=e[P]-(787658-787657),j+(615788-615787)if-87497-(-87497)==e[P]then e[P],E[P]=nil,nil end P=p[j]end end return(b(9809542-426033,{}))(m(N))end)(getfenv and getfenv()or _ENV,unpack or table[j(669700+-674220)],newproxy,setmetatable,getmetatable,select,{...})end)(...)
+local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Crokier/Roblox/main/Packages/Sampluy/init.luau"))()
+
+local Services = setmetatable({}, {__index = function(_, i) return cloneref and cloneref(game:GetService(i)) or game:GetService(i) end})
+local Players = Services.Players
+local ReplicatedStorage = Services.ReplicatedStorage
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+local Backpack = LocalPlayer:FindFirstChildOfClass("Backpack")
+
+local CollectCashPacket, TurretUpgradePacket, TurretPickupPacket, TurretPlacePacket, TurretSpinPacket, TurretBuyPacket = nil, nil, nil, nil, nil, nil
+local Enableds, Connections, Packets = {}, {}, {}
+local UpgradeAccessColor, GridAccessColor = Color3.fromRGB(50, 214, 0), Color3.fromRGB(80, 220, 90)
+local TurretData = nil
+local SpinTypes, SpinActives = {}, {AllEnabled = true}
+local Character = LocalPlayer.Character
+
+local UpgradeTypes = {"Turret","Turret Luck","Turret Roll Slots","Zombie Luck","Zombie Cash Boost","Plot Level"}
+
+for _, key in ipairs({"Turret","TurretLuck","TurretRollSlots","ZombieLuck","ZombieCash","PlotLevel","Cash","Roll","Ring"}) do
+	Enableds[key] = false
+end
+
+Connections.CharacterAdded = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
+	Character = newCharacter
+end)
+
+local function req(module)
+	local success, result = pcall(require,module)
+	return (success == true and result ~= nil) == true and result or nil
+end
+
+local function GetPlot()
+	local plots = workspace:FindFirstChild("Plots")
+	if not plots then return nil end
+
+	for _, plot in ipairs(plots:GetChildren()) do
+		local ownerId = plot:GetAttribute("OwnerUserId")
+		if ownerId ~= nil and ownerId == LocalPlayer.UserId then
+			return plot
+		end
+	end
+
+	return nil
+end
+
+local Plot = GetPlot()
+
+local PlotFile = {}
+PlotFile.Turrets = Plot and Plot:FindFirstChild("Turrets")
+PlotFile.Functional = Plot and Plot:FindFirstChild("Functional")
+PlotFile.Grid = PlotFile.Functional and PlotFile.Functional:FindFirstChild("Grid")
+PlotFile.SpinStands = PlotFile.Functional and PlotFile.Functional:FindFirstChild("SpinStands")
+PlotFile.Buttons = PlotFile.Functional and PlotFile.Functional:FindFirstChild("SpinButton")
+PlotFile.SpinPrompt = PlotFile.Buttons and PlotFile.Buttons.Button.TurretSpinButton
+
+local RingConnection = nil
+
+local TurretDataModule = ReplicatedStorage:QueryDescendants("#Databases > #Turrets")[1]
+if TurretDataModule then
+	TurretData = TurretData or req(TurretDataModule:Clone())
+end
+
+if TurretData then
+	for key, value in pairs(TurretData) do
+		if value then
+			local rarity = value.Rarity
+			if not rarity then continue end
+			if SpinActives[rarity] == nil then
+				SpinActives[rarity] = false
+				table.insert(SpinTypes, rarity)
+			end
+		end
+	end
+end
+
+local function FirePrompt(prompt)
+	if fireproximityprompt then
+		fireproximityprompt(prompt, 0)
+	end
+end
+
+local function FireTouch(hitPart, targetPart)
+	if firetouchinterest then
+		firetouchinterest(hitPart, targetPart, 1)
+		task.wait()
+		firetouchinterest(hitPart, targetPart, 0)
+	end
+end
+
+local function FireButton(button)
+	if firesignal then
+		firesignal(button.Activated)
+		firesignal(button.MouseButton1Click)
+	end
+end
+
+local function HandleRoll()
+	if not Enableds.Roll then return end
+	task.spawn(function()
+		Packets.TurretSpin = Packets.TurretSpin or ReplicatedStorage:QueryDescendants("#Events > #Global > #Core > #TurretSpin")[1]
+		Packets.TurretBuyReward = Packets.TurretBuyReward or ReplicatedStorage:QueryDescendants("#Events > #Global > #Core > #TurretBuyReward")[1]
+		Plot = Plot or GetPlot()
+		PlotFile.Functional = Plot and Plot:FindFirstChild("Functional")
+		PlotFile.Buttons = PlotFile.Functional and PlotFile.Functional:FindFirstChild("SpinButton")
+		PlotFile.SpinPrompt = PlotFile.Buttons and PlotFile.Buttons.Button.TurretSpinButton
+		local spinData = nil
+		local applySpin = function()
+			if spinData and Enableds.Roll then
+				for rank, name in ipairs(spinData) do
+					if not Enableds.Roll then break end
+					local turretStats = TurretData[name]
+					if not turretStats then continue end
+					local rarity = turretStats.Rarity
+					if SpinActives.AllEnabled ~= true and SpinActives[rarity] then continue end
+					Packets.TurretBuyReward:FireServer(rank)
+				end
+				spinData = nil
+			end
+		end
+		while Enableds.Roll do
+			task.wait(1)
+			applySpin()
+			if Enableds.Roll then
+				FirePrompt(PlotFile.SpinPrompt)
+			end
+			spinData = Packets.TurretSpin.OnClientEvent:Wait()
+			task.wait(5)
+			applySpin()
+		end
+	end)
+end
+
+local function HandleCash()
+	if not Enableds.Cash then return end
+	task.spawn(function()
+		Packets.TurretCollect = Packets.TurretCollect or ReplicatedStorage:QueryDescendants("#Events > #Global > #Core > #TurretCollect")[1]
+		while Enableds.Cash do
+			Packets.TurretCollect:FireServer()
+			task.wait(1)
+		end
+	end)
+end
+
+local function RingAdded(ring)
+	if ring and ring.Parent and ring:IsA("BasePart") and ring.Name:find("DroppedItemRing") then
+		if Character and Character.Parent and Character.PrimaryPart then
+			FireTouch(Character.PrimaryPart, ring)
+		end
+	end
+end
+
+local function HandleRing()
+	if Connections.Ring then Connections.Ring:Disconnect() Connections.Ring = nil end
+	if not Enableds.Ring then return end
+	Connections.Ring = workspace.ChildAdded:Connect(RingAdded)
+	for _, ring in ipairs(workspace:GetChildren()) do
+		if not Enableds.Ring then break end
+		RingAdded(ring)
+	end
+end
+
+local function HandleUpgrade()
+	if not Enableds.Upgrade then return end
+	local plotScreens = PlayerGui:FindFirstChild("PlotScreens")	
+	if plotScreens then
+		task.spawn(function()
+			local turretScreen = plotScreens:FindFirstChild("TurretScreen")
+			if not turretScreen then return end
+			local turretScroll = turretScreen:FindFirstChild("Frame")
+			if not turretScroll then return end
+			while Enableds.Upgrade do
+				if Enableds.TurretLuck or Enableds.TurretRollSlots then
+					for _, layer in ipairs(turretScroll:GetChildren()) do
+						if not (Enableds.TurretLuck or Enableds.TurretRollSlots) then break end
+						if not (layer and layer.Parent) then continue end
+						local title = layer:FindFirstChild("Title")
+						local buyButton = layer:FindFirstChild("Buy")
+						if not (title and buyButton) then continue end
+						if buyButton.BackgroundColor3 == UpgradeAccessColor  then
+							local lowerText, access = title.Text:lower(), false
+							if lowerText:find("turret luck") and Enableds.TurretLuck then
+								access = true
+							elseif lowerText:find("turret roll slots") and Enableds.TurretRollSlots then
+								access = true
+							end
+							if access then
+								FireButton(buyButton)
+							end
+						end
+						task.wait(0.1)
+					end
+				end
+				task.wait(1)
+			end
+		end)
+		task.spawn(function()
+			local plotScreen = plotScreens:FindFirstChild("PlotScreen")
+			if not plotScreen then return end
+			local plotScroll = plotScreen:FindFirstChild("Frame")
+			if not plotScroll then return end
+			while Enableds.Upgrade do
+				if Enableds.PlotLevel then
+					for _, layer in ipairs(plotScroll:GetChildren()) do
+						if not Enableds.PlotLevel then break end
+						if not (layer and layer.Parent) then continue end
+						local title = layer:FindFirstChild("Title")
+						local buyButton = layer:FindFirstChild("Buy")
+						if not (title and buyButton) then continue end
+						if buyButton.BackgroundColor3 == UpgradeAccessColor and title.Text:lower():find("plot level") and Enableds.PlotLevel then
+							FireButton(buyButton)
+						end
+						task.wait(0.1)
+					end
+				end
+				task.wait(1)
+			end
+		end)
+		task.spawn(function()
+			local zombieScreen = plotScreens:FindFirstChild("ZombieScreen")
+			if not zombieScreen then return end
+			local zombieScroll = zombieScreen:FindFirstChild("Frame")
+			if not zombieScroll then return end
+			while Enableds.Upgrade do
+				if Enableds.ZombieLuck or Enableds.ZombieCash then
+					for _, layer in ipairs(zombieScroll:GetChildren()) do
+						if not (Enableds.ZombieLuck or Enableds.ZombieCash) then break end
+						if not (layer and layer.Parent) then continue end
+						local title = layer:FindFirstChild("Title")
+						local buyButton = layer:FindFirstChild("Buy")
+						if not (title and buyButton) then continue end
+						if buyButton.BackgroundColor3 == UpgradeAccessColor  then
+							local lowerText, access = title.Text:lower(), false
+							if lowerText:find("zombie luck") and Enableds.ZombieLuck then
+								access = true
+							elseif lowerText:find("zombie cash boost") or lowerText:find("zombie cash") and Enableds.ZombieCash then
+								access = true
+							end
+							if access  then
+								FireButton(buyButton)
+							end
+						end
+						task.wait(0.1)
+					end
+				end
+				task.wait(1)
+			end
+		end)
+	end
+	task.spawn(function()
+		Packets.TurretUpgrade = Packets.TurretUpgrade or ReplicatedStorage:QueryDescendants("#Events > #Global > #Core > #TurretUpgrade")[1]
+		Plot = Plot or GetPlot()
+		PlotFile.Turrets = PlotFile.Turrets or Plot and Plot:FindFirstChild("Turrets")
+		while Enableds.Upgrade do
+			if Enableds.Turret then
+				local sortTurrets = {}
+				for _, turret in ipairs(PlotFile.Turrets:GetChildren()) do
+					if not Enableds.Turret then break end
+					if not (turret and turret.Parent and turret:IsA("Model")) then continue end
+					local turretName, gridCell = turret:GetAttribute("TurretName") or turret.Name, turret:GetAttribute("GridCell")
+					if not gridCell then continue end
+					local turretStats = TurretData[turretName] or {}
+					table.insert(sortTurrets, {GridCell = gridCell, Damage = turretStats.Damage or 0})
+					task.wait(0.1)
+				end
+				table.sort(sortTurrets, function(a, b)
+					return a.Damage > b.Damage
+				end)
+				for _, info in ipairs(sortTurrets) do
+					if not Enableds.Turret then break end
+					if info.GridCell then
+						Packets.TurretUpgrade:FireServer(info.GridCell)
+					end
+					task.wait(0.1)
+				end
+			end
+			task.wait(1)
+		end
+	end)
+end
+
+local function HandleEquipBestTurret()
+	TurretPickupPacket = TurretPickupPacket or ReplicatedStorage.Events.Global.Core.TurretPickup
+	Plot = Plot or GetPlot()
+	PlotFile.Turrets = PlotFile.Turrets or Plot and Plot:FindFirstChild("Turrets")
+
+	for _, turret in ipairs(PlotFile.Turrets:GetChildren()) do
+		local gridCell = turret:GetAttribute("GridCell")
+		if not gridCell then continue end
+		TurretPickupPacket:FireServer(gridCell)
+	end
+
+	task.wait(1)
+
+	local turretPlaces = {}
+
+	for _, turret in ipairs(Backpack:GetChildren()) do
+		if turret and turret.Parent and turret:IsA("Tool") then
+			local level = turret:GetAttribute("TurretLevel")
+			if not level then continue end
+			local name = turret:GetAttribute("TurretName") or turret.Name
+			local turretStats = TurretData[name] or {}
+			table.insert(turretPlaces, {Count = turret:GetAttribute("Count") or 1, Name = name, Damage = turretStats.Damage or 1, Level = level})
+		end
+	end
+
+	table.sort(turretPlaces, function(a, b)
+		if a.Damage == b.Damage then
+			return a.Level > b.Level
+		else
+			return a.Damage > b.Damage
+		end
+	end)
+
+	TurretPlacePacket = TurretPlacePacket or ReplicatedStorage.Events.Global.Core.TurretPlace
+	PlotFile.Functional = PlotFile.Functional or Plot and Plot:FindFirstChild("Functional")
+	PlotFile.Grid = PlotFile.Functional and PlotFile.Functional:FindFirstChild("Grid")
+
+	local grids = {}
+
+	for _, gridModel in ipairs(PlotFile.Grid:GetChildren()) do
+		for _, gridPart in ipairs(gridModel:GetChildren()) do
+			if gridPart:IsA("BasePart") and gridPart.Name:lower():find("grid") and gridPart.Transparency == 1 then
+				table.insert(grids, gridPart.Name)
+			end
+		end
+	end
+
+	for _, gridName in ipairs(grids) do
+		if #turretPlaces > 0 then
+			local turret = table.remove(turretPlaces, 1)
+			TurretPlacePacket:FireServer(turret.Name, turret.Level, gridName)
+		end
+	end
+
+	table.clear(turretPlaces)
+	table.clear(grids)
+end
+
+local Window = UI:CreateWindow({
+	Name = "Zombie Turret Farm",
+	Destroying = function()
+		for _, key in ipairs({"Upgrade","Turret","TurretLuck","TurretRollSlots","ZombieLuck","ZombieCash","PlotLevel","CollectCash","Roll"}) do
+			Enableds[key] = false
+		end
+		local key, connection = next(Connections)
+		while connection do
+			Connections[key] = nil
+			connection:Disconnect()
+			key, connection = next(Connections)
+		end
+
+	end
+})
+
+Window:AddDropdown({
+	Text = "Roll Type (Empty = All)",
+	Options = SpinTypes,
+	MultipleOptions = true,
+	Flag = "roll_options",
+	Callback = function(option)
+		for _, mode in ipairs(SpinTypes) do
+			SpinActives[mode] = table.find(option, mode) ~= nil
+		end
+		SpinActives["AllEnabled"] = #option <= 0
+	end
+})
+
+Window:AddToggle({
+	Text = "Auto Roll",
+	Value = false,
+	Flag = "roll_enabled",
+	Callback = function(value)
+		Enableds.Roll = value
+		HandleRoll()
+	end
+})
+
+Window:AddToggle({
+	Text = "Collect Cash",
+	Value = false,
+	Flag = "cash_enabled",
+	Callback = function(value)
+		Enableds.Cash = value
+		HandleCash()
+	end
+})
+
+Window:AddDropdown({
+	Text = "Upgrade Type",
+	Options = UpgradeTypes,
+	Option = nil,
+	MultipleOptions = true,
+	Flag = "upgrade_options",
+	Callback = function(option)
+		for _, mode in ipairs(UpgradeTypes) do
+			Enableds[mode] = table.find(option, "Turret") ~= nil
+		end
+	end
+})
+
+Window:AddToggle({
+	Text = "Auto Upgrade",
+	Value = false,
+	Flag = "upgrade_enabled",
+	Callback = function(value)
+		Enableds.Upgrade = value
+		HandleUpgrade()
+	end
+})
+
+Window:AddToggle({
+	Text = "Collect Ring",
+	Value = false,
+	Flag = "ring_enabled",
+	Callback = function(value)
+		Enableds.Ring = value
+		HandleRing()
+	end
+})
+
+Window:AddButton({
+	Text = "Equip Best Turret",
+	MethodType = "DebounceClick",
+	Callback = HandleEquipBestTurret()
+})
+
+Window:AddLabel({
+	Text = "YouTube: Crokyreo",
+	TextColor3 = Color3.fromRGB(255, 255, 255)
+})
