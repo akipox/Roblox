@@ -327,19 +327,14 @@ local function HandleUpgrade()
 	end)
 end
 
-local function FireAllLike()
-
-end
 local function HandleLike()
 	if Cacheds.LikeThread then Cacheds.LikeThread=Cleanup(Cacheds.LikeThread) end
 	if not Enableds.Like then return end
-
 	if not Packets.RequestPlot then 
 		Enableds.Like=false
 		Interfaces.LikeToggle:Replace(false)
 		return 
 	end
-
 	Cacheds.LikeThread=task.spawn(function()
 		while Enableds.Like do
 			for _, info in ipairs(GetPlots()) do
@@ -390,11 +385,12 @@ Interfaces.CashToggle=Window:AddToggle({
 	end
 })
 
-Window:AddDropdown({
+Interfaces.ASMRDropdown=Window:AddDropdown({
 	Text="ASMR Type",
 	Options=#TypeData.ASMRs>0 and TypeData.ASMRs or {"No ASMR Type"},
 	Option=nil,
-	MultipleOptions=true,
+	Multi=true,
+	Visible=false,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.ASMRs) do
 			ActiveData.ASMRs[key]=table.find(option,key)~=nil
@@ -403,11 +399,12 @@ Window:AddDropdown({
 	end
 })
 
-Window:AddDropdown({
+Interfaces.PartDropdown=Window:AddDropdown({
 	Text="Part Type",
 	Options=#TypeData.Parts>0 and TypeData.Parts or {"No Part Type"},
 	Option=nil,
-	MultipleOptions=true,
+	Multi=true,
+	Visible=false,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Parts) do
 			ActiveData.Parts[key]=table.find(option,key)~=nil
@@ -416,16 +413,30 @@ Window:AddDropdown({
 	end
 })
 
-Window:AddDropdown({
+Interfaces.UpgradeDropdown=Window:AddDropdown({
 	Text="Upgrade Type",
 	Options=#TypeData.Upgrade>0 and TypeData.Upgrade or {"No Upgrade Type"},
 	Option=nil,
-	MultipleOptions=true,
+	Multi=true,
+	Visible=true,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Upgrade) do
 			ActiveData.Upgrade[key]=table.find(option,key)~=nil
 		end
 		ActiveData.Upgrade.AllEnabled=#option<=0
+	end
+})
+
+Window:AddSelector({
+	Text=nil,
+	Options={"Upgrade","Part","ASMR"},
+	NoCap=true,
+	Callback=function(key)
+		for _,dropdown in ipairs({Interfaces.UpgradeDropdown,Interfaces.PartDropdown,Interfaces.ASMRDropdown}) do
+		   dropdown.Visible=false
+		end
+		local dropdown=Interfaces[key.."Dropdown"]
+		if dropdown then dropdown.Visible=true end
 	end
 })
 
