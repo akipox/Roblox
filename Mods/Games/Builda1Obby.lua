@@ -390,7 +390,6 @@ Interfaces.ASMRDropdown=Window:AddDropdown({
 	Options=#TypeData.ASMRs>0 and TypeData.ASMRs or {"No ASMR Type"},
 	Option=nil,
 	Multi=true,
-	Visible=false,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.ASMRs) do
 			ActiveData.ASMRs[key]=table.find(option,key)~=nil
@@ -404,7 +403,6 @@ Interfaces.PartDropdown=Window:AddDropdown({
 	Options=#TypeData.Parts>0 and TypeData.Parts or {"No Part Type"},
 	Option=nil,
 	Multi=true,
-	Visible=false,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Parts) do
 			ActiveData.Parts[key]=table.find(option,key)~=nil
@@ -418,7 +416,6 @@ Interfaces.UpgradeDropdown=Window:AddDropdown({
 	Options=#TypeData.Upgrade>0 and TypeData.Upgrade or {"No Upgrade Type"},
 	Option=nil,
 	Multi=true,
-	Visible=true,
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Upgrade) do
 			ActiveData.Upgrade[key]=table.find(option,key)~=nil
@@ -426,6 +423,10 @@ Interfaces.UpgradeDropdown=Window:AddDropdown({
 		ActiveData.Upgrade.AllEnabled=#option<=0
 	end
 })
+
+for _,dropdown in ipairs({Interfaces.PartDropdown,Interfaces.ASMRDropdown}) do
+	dropdown.Visible=false
+end
 
 Window:AddSelector({
 	Text=nil,
