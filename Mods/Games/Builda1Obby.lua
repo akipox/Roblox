@@ -13,6 +13,7 @@ local Cacheds={}
 
 local Packets={
 	["RequestPlot"]=ReplicatedStorage:QueryDescendants("#GameSystems > #Packages > #Networker >> #PlotService > #RemoteEvent")[1],
+	["PlotFavoriteRequest"]=ReplicatedStorage:QueryDescendants("#GameSystems > #PlotFavoriteRequest")[1]
 	-- ReplicatedStorage.GameSystems.Packages.Networker["leifstout_networker@0.3.0"].networker._remotes.PlotService.RemoteEvent
 }
 
@@ -27,20 +28,16 @@ local Interfaces={
 local BuyTypes={"Buy ASMR","Buy Part"}
 
 local TypeData={
-	["Upgrade"]={},
+	["Upgrade"]={BuyTypes[1],BuyTypes[2]},
 	["ASMRs"]={},
 	["Parts"]={}
 }
 
-for _, key in ipairs(BuyTypes) do table.insert(TypeData.Upgrade,key) end
-
-local PlayerCache={}
-
 local ActiveData={
 	["Upgrade"]={
 		["AllEnabled"]=true,
-		["Buy ASMR"]=false,
-		["Buy Part"]=false
+		[BuyTypes[1]]=false,
+		[BuyTypes[2]]=false
 	},
 	["ASMRs"]={["AllEnabled"]=true},
 	["Parts"]={["AllEnabled"]=true}
@@ -229,20 +226,23 @@ local function GetPlots()
 	local results={}
 	for _,plot in ipairs(PlotsFolder:GetChildren()) do
 		if plot and plot.Parent then
-			local ownerName=plot:GetAttribute("Owner")
-			if ownerName~=nil then
-				table.insert(results,{["OwnerName"]=ownerName,["Instance"]=plot})
-			end
+			table.insert(results,{["OwnerName"]=plot:GetAttribute("Owner"),["OwnerUserId"]=plot:GetAttribute("OwnerUserId"),["Instance"]=plot})
 		end
 	end
 	return results
 end
 
-local function FindFirstPlot(ownerName)
-	for _,info in ipairs(GetPlots()) do
-		if info.OwnerName==ownerName then
+local function FindFirstPlot(ownerName, ownerUserId)
+	local results=GetPlots()
+	while #results>0 do
+		local info=table.remove(results)
+		if info.OwnerName~=nil and info.OwnerName==ownerName then
 			return info.Instance
 		end
+		if info.OwnerUserId~=nil and info.OwnerUserId==ownerUserId then
+			return info.Instance
+		end
+	    task.wait()
 	end
 	return nil
 end
@@ -251,115 +251,7 @@ local LocalPlot=FindFirstPlot(LocalPlayer.Name)
 local CashHitbox=nil
 
 local function HandleCash()
-	if not Enableds.Cash then return end
-	CashHitbox=CashHitbox or LocalPlot:QueryDescendants("#CollectAll > #PRIMARY")[1]
-	if not Packets.RequestPlot then
-		Enableds.Cash=false
-		Interfaces.CashToggle:Replace(false)
-		return 
-	end
 
-	task.spawn(function()
-		while Enableds.Cash do
-			if Packets.RequestPlot then
-				Packets.RequestPlot:FireServer("Collect")
-			else
-				local rootPart=Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
-				if rootPart and CashHitbox then
-					FireTouch(rootPart,CashHitbox)
-				end
-			end
-			task.wait(3)
-		end
-	end)
-end
-
-local function HandleUpgrade()
-	if not Enableds.Upgrade then return end
-	task.spawn(function()
-		while Enableds.Upgrade do
-			for key, active in pairs(ActiveData.Upgrade) do
-				if not Enableds.Upgrade then break end
-				if key~="AllEnabled" and (ActiveData.Upgrade.AllEnabled==true or active==true) then
-					local info=InfoData.Upgrade[key]
-					if info~=nil then
-						local button=info.Button
-						if button~=nil and button.BackgroundColor3==SuccessColor then
-							FireButton(button)
-						end
-					end
-				end
-				task.wait()
-			end
-			task.wait()
-		end
-	end)
-	task.spawn(function()
-		while Enableds.Upgrade do
-			for _,mode in ipairs(BuyTypes) do
-				local active=ActiveData.Upgrade[mode]
-				if not Enableds.Upgrade then break end
-				if active then
-					local actives,infos={},{}
-					if mode==BuyTypes[1] then
-						actives=ActiveData.ASMRs
-						infos=InfoData.ASMRs
-					else
-						actives=ActiveData.Parts
-						infos=InfoData.Parts
-					end
-					for _,info in ipairs(infos) do
-						local key=info.Name
-						local active=actives[key]
-						if info~=nil and (actives.AllEnabled or active) then
-							local stock=info.Stock
-							local button=info.Button
-							if button~=nil and stock~=nil and button.BackgroundColor3==SuccessColor and stock.TextColor3==SuccessColor then
-								FireButton(button)
-							end
-						end
-					end
-				end
-				task.wait()
-			end
-			task.wait()
-		end
-	end)
-end
-
-local function HandleLike()
-	if Cacheds.LikeThread then Cacheds.LikeThread=Cleanup(Cacheds.LikeThread) end
-	if not Enableds.Like then return end
-	if not Packets.RequestPlot then 
-		Enableds.Like=false
-		Interfaces.LikeToggle:Replace(false)
-		return 
-	end
-	Cacheds.LikeThread=task.spawn(function()
-		while Enableds.Like do
-			for _, info in ipairs(GetPlots()) do
-				if not Enableds.Like then break end
-				local player=Players:FindFirstChild(info.OwnerName)
-				if player then
-					Packets.RequestPlot:FireServer("LikePlot",player)
-					task.wait()
-				end
-			end
-			task.wait(3)
-		end
-	end)
-end
-
-local function HandleRebirth()
-	if not Enableds.Rebirth then return end
-	task.spawn(function()
-		while Enableds.Rebirth do
-			if Interfaces.RebirthFill.Size.X.Scale>=1 then
-				FireButton(Interfaces.RebirthButton)
-			end
-			task.wait(0.5)
-		end
-	end)
 end
 
 local Window=UI:CreateWindow({
@@ -381,7 +273,26 @@ Interfaces.CashToggle=Window:AddToggle({
 	Value=false,
 	Callback=function(value)
 		Enableds.Cash=value
-		HandleCash()
+		if not Enableds.Cash then return end
+	    CashHitbox=CashHitbox or LocalPlot:QueryDescendants("#CollectAll > #PRIMARY")[1]
+	    if not Packets.RequestPlot then
+		    Enableds.Cash=false
+		    Interfaces.CashToggle:Replace(false)
+		    return 
+	    end
+	    task.spawn(function()
+		   while Enableds.Cash do
+			   if Packets.RequestPlot then
+				  Packets.RequestPlot:FireServer("Collect")
+			   else
+				  local rootPart=Character.PrimaryPart or Character:FindFirstChild("HumanoidRootPart")
+				  if rootPart and CashHitbox then
+					 FireTouch(rootPart,CashHitbox)
+				  end
+			   end
+			  task.wait(3)
+		   end
+	   end)
 	end
 })
 
@@ -431,7 +342,7 @@ end
 Window:AddSelector({
 	Text=nil,
 	Options={"Upgrade","Part","ASMR"},
-	NoCap=true,
+	NoCap=false,
 	Callback=function(key)
 		for _,dropdown in ipairs({Interfaces.UpgradeDropdown,Interfaces.PartDropdown,Interfaces.ASMRDropdown}) do
 		   dropdown.Visible=false
@@ -446,16 +357,88 @@ Window:AddToggle({
 	Value=false,
 	Callback=function(value)
 		Enableds.Upgrade=value
-		HandleUpgrade()
+		if not Enableds.Upgrade then return end
+	    task.spawn(function()
+		    while Enableds.Upgrade do
+			   for key, active in pairs(ActiveData.Upgrade) do
+				  if not Enableds.Upgrade then break end
+				  if key~="AllEnabled" and (ActiveData.Upgrade.AllEnabled==true or active==true) then
+					  local info=InfoData.Upgrade[key]
+					  if info~=nil then
+						  local button=info.Button
+						  if button~=nil and button.BackgroundColor3==SuccessColor then
+							 FireButton(button)
+						  end
+					  end
+				  end
+				  task.wait()
+			   end
+			   task.wait()
+		    end
+	    end)
+	    task.spawn(function()
+		    while Enableds.Upgrade do
+			   for _,mode in ipairs(BuyTypes) do
+				  local active=ActiveData.Upgrade[mode]
+				  if not Enableds.Upgrade then break end
+				  if active then
+					  local actives,infos={},{}
+					  if mode==BuyTypes[1] then
+						  actives=ActiveData.ASMRs
+						  infos=InfoData.ASMRs
+				      else
+						  actives=ActiveData.Parts
+						  infos=InfoData.Parts
+					  end
+					  for _,info in ipairs(infos) do
+						  local key=info.Name
+						  local active=actives[key]
+						  if info~=nil and (actives.AllEnabled or active) then
+							  local stock=info.Stock
+							  local button=info.Button
+							  if button~=nil and stock~=nil and button.BackgroundColor3==SuccessColor and stock.TextColor3==SuccessColor then
+								  FireButton(button)
+							  end
+						  end
+					   end
+				    end
+				    task.wait()
+			    end
+			    task.wait()
+		    end
+	    end)
 	end
 })
 
 Interfaces.LikeToggle=Window:AddToggle({
-	Text="Auto Like",
+	Text="Auto Like/Favorite",
 	Value=false,
 	Callback=function(value)
 		Enableds.Like=value
-		HandleLike()
+		if not Enableds.Like then return end
+	    task.spawn(function()
+		  while Enableds.Like do
+			  local results=GetPlots()
+			  for _,info in ipairs(results) do
+				  if not Enableds.Like then break end
+				  local done=false
+				  local likePlot=info.Instance:FindFirstChild("LikePlot")
+				  if likePlot and info.OwnerUserId and Packets.PlotFavoriteRequest then
+					 Packets.PlotFavoriteRequest:InvokeServer(likePlot,"plot:".. tostring(info.OwnerUserId) ..":1",true)
+				     done=true 
+				  end
+				  if not done then
+				     local player=Players:FindFirstChild(info.OwnerName)
+				     if player and Packets.RequestPlot then
+					    Packets.RequestPlot:FireServer("LikePlot",player)
+					    task.wait()
+				     end
+				  end
+			  end
+			  table.clear(results)
+			  task.wait(3)
+		   end
+	   end)
 	end
 })
 
@@ -464,7 +447,15 @@ Window:AddToggle({
 	Value=false,
 	Callback=function(value)
 		Enableds.Rebirth=value
-		HandleRebirth()
+	    if not Enableds.Rebirth then return end
+	    task.spawn(function()
+		    while Enableds.Rebirth do
+		       if Interfaces.RebirthFill.Size.X.Scale>=1 then
+				  FireButton(Interfaces.RebirthButton)
+			   end
+			   task.wait()
+		    end
+	    end)
 	end
 })
 
