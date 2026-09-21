@@ -256,7 +256,7 @@ end
 
 local Window=UI:CreateWindow({
 	Name="Build a +1 Obby", 
-	ConfigInfo={Enabled=true,Path="Crokyreo/Builda1Obby/settings.json"},
+	ConfigInfo={Enabled=true,Path="Crokyreo/Builda1Obby/configs.json"},
 	Destroying=function()
 		for key,enabled in pairs(Enableds) do
 			Enableds[key]=false
@@ -348,7 +348,7 @@ Window:AddSelector({
 	Text=nil,
 	Options={"Upgrade","Part","ASMR"},
 	NoCap=false,
-	Flag="chosen_data",
+	Flag="chosen_upgrade",
 	Callback=function(key)
 		for _,dropdown in ipairs({Interfaces.UpgradeDropdown,Interfaces.PartDropdown,Interfaces.ASMRDropdown}) do
 		   dropdown.Visible=false
