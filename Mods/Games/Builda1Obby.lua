@@ -256,6 +256,7 @@ end
 
 local Window=UI:CreateWindow({
 	Name="Build a +1 Obby", 
+	ConfigInfo={Enabled=true,Path="Crokyreo/Builda1Obby/settings.json"}),
 	Destroying=function()
 		for key,enabled in pairs(Enableds) do
 			Enableds[key]=false
@@ -271,6 +272,7 @@ local Window=UI:CreateWindow({
 Interfaces.CashToggle=Window:AddToggle({
 	Text="Collect Cash",
 	Value=false,
+	Flag="cash_enabled",
 	Callback=function(value)
 		Enableds.Cash=value
 		if not Enableds.Cash then return end
@@ -301,6 +303,7 @@ Interfaces.ASMRDropdown=Window:AddDropdown({
 	Options=#TypeData.ASMRs>0 and TypeData.ASMRs or {"No ASMR Type"},
 	Option=nil,
 	Multi=true,
+	Flag="asmr_options",
 	Callback=function(option)
 		for _,key in ipairs(TypeData.ASMRs) do
 			ActiveData.ASMRs[key]=table.find(option,key)~=nil
@@ -314,6 +317,7 @@ Interfaces.PartDropdown=Window:AddDropdown({
 	Options=#TypeData.Parts>0 and TypeData.Parts or {"No Part Type"},
 	Option=nil,
 	Multi=true,
+	Flag="part_options",
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Parts) do
 			ActiveData.Parts[key]=table.find(option,key)~=nil
@@ -327,6 +331,7 @@ Interfaces.UpgradeDropdown=Window:AddDropdown({
 	Options=#TypeData.Upgrade>0 and TypeData.Upgrade or {"No Upgrade Type"},
 	Option=nil,
 	Multi=true,
+	Flag="upgrade_options",
 	Callback=function(option)
 		for _,key in ipairs(TypeData.Upgrade) do
 			ActiveData.Upgrade[key]=table.find(option,key)~=nil
@@ -343,6 +348,7 @@ Window:AddSelector({
 	Text=nil,
 	Options={"Upgrade","Part","ASMR"},
 	NoCap=false,
+	Flag="chosen_data",
 	Callback=function(key)
 		for _,dropdown in ipairs({Interfaces.UpgradeDropdown,Interfaces.PartDropdown,Interfaces.ASMRDropdown}) do
 		   dropdown.Visible=false
@@ -355,6 +361,7 @@ Window:AddSelector({
 Window:AddToggle({
 	Text="Auto Upgrade",
 	Value=false,
+	Flag="upgrade_enabled",
 	Callback=function(value)
 		Enableds.Upgrade=value
 		if not Enableds.Upgrade then return end
@@ -413,6 +420,7 @@ Window:AddToggle({
 Interfaces.LikeToggle=Window:AddToggle({
 	Text="Auto Like/Favorite",
 	Value=false,
+	Flag="favorite_enabled",
 	Callback=function(value)
 		Enableds.Like=value
 		if not Enableds.Like then return end
@@ -445,6 +453,7 @@ Interfaces.LikeToggle=Window:AddToggle({
 Window:AddToggle({
 	Text="Auto Rebirth",
 	Value=false,
+	Flag="rebirth_enabled",
 	Callback=function(value)
 		Enableds.Rebirth=value
 	    if not Enableds.Rebirth then return end
@@ -463,3 +472,5 @@ Window:AddLabel({
 	Text="YouTube: Crokyreo",
 	TextColor3=Color3.fromRGB(255,255,255)
 })
+
+Window:LoadConfig()
