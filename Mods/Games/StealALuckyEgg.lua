@@ -218,6 +218,7 @@ end
 
 local Window = UI:CreateWindow({
 	Name = "Steal A Lucky Egg",
+	ConfigInfo = {Enabled=true,Path="Crokyreo/StealALuckyEgg/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
@@ -230,6 +231,7 @@ Window:AddDropdown({
 	Options = AreasList,
 	Option = Values.ChosenArea,
 	Multi = false,
+	Flag = "area_options",
 	Callback = function(option)
 		Values.ChosenArea = option[1]
 	end
@@ -238,6 +240,7 @@ Window:AddDropdown({
 Window:AddToggle({
 	Text = "Auto Collect",
 	Value = false,
+	Flag = "collect_enabled",
 	Callback = function(value)
 		Enableds.Collect = value
 		if not Enableds.Collect then return end
@@ -353,6 +356,7 @@ Window:AddToggle({
 Window:AddToggle({
 	Text = "Click Multiply",
 	Value = false,
+	Flag = "click_multiply_enabled",
 	Callback = function(value)
 		Enableds.ClickMultiply = value
 		if  Connections.MultiplyAdded then  Connections.MultiplyAdded:Disconnect() Connections.MultiplyAdded = nil end
@@ -378,6 +382,7 @@ Window:AddDropdown({
 	Options=#UpgradeTypes>0 and UpgradeTypes or {"No Upgrade Type"},
 	Option=nil,
 	Multi=true,
+	Flag = "upgrade_options",
 	Callback=function(option)
 		for _,key in ipairs(UpgradeTypes) do
 			UpgradeActives[key]=table.find(option,key)~=nil
@@ -389,6 +394,7 @@ Window:AddDropdown({
 Window:AddToggle({
 	Text="Auto Upgrade",
 	Value=false,
+	Flag = "upgrade_enabled",
 	Callback=function(value)
 		Enableds.Upgrade=value
 		if not Enableds.Upgrade then return end
@@ -452,6 +458,7 @@ Window:AddToggle({
 Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
+	Flag = "rebirth_enabled",
 	Callback = function(value)
 		Enableds.Rebirth = value
 		if not Enableds.Rebirth then return end
@@ -473,6 +480,7 @@ Window:AddToggle({
 Window:AddToggle({
 	Text = "Claim Index",
 	Value = false,
+	Flag = "index_enabled",
 	Callback = function(value)
 		Enableds.ClaimIndex = value
 		if not Enableds.ClaimIndex then return end
@@ -485,7 +493,7 @@ Window:AddToggle({
 	end
 })
 
-Window:AddLabel({
-	Text = "YouTube: Crokyreo",
-	TextColor3 = Color3.fromRGB(255, 255, 255)
-})
+Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
+Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
+Services.GuiService:SetGameplayPausedNotificationEnabled(false)
+Window:LoadConfig()
