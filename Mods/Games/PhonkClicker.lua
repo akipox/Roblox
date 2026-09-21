@@ -17,7 +17,7 @@ local Values = {
 	["RebirthDebounce"] = false,
 	["LuckyBlockDebounce"] = false,
 	["FailColor"] = Color3.fromRGB(244, 67, 54),
-	["SuccessColor"] = Color3.fromRGB(112, 255, 73) 
+	["SuccessColor"] = Color3.fromRGB(112, 255, 73)
 }
 
 local TypeData = {
@@ -230,7 +230,7 @@ Interfaces.CodeDropdown = Window:AddDropdown({
 	Options = {"No Code"},
 	Option = nil,
 	Multi = true,
-	Flag = "rebirth_enabled",
+	Flag = "code_options",
 	Callback = function() end
 })
 
