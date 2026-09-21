@@ -339,6 +339,7 @@ end
 
 local Window = UI:CreateWindow({
 	Name = "Zombie Turret Farm",
+	ConfigInfo = {Enabled=true,Path="Crokyreo/ZombieTurretFarm/configs.json"},	
 	Destroying = function()
 		for _, key in ipairs({"Upgrade","Turret","TurretLuck","TurretRollSlots","ZombieLuck","ZombieCash","PlotLevel","CollectCash","Roll"}) do
 			Enableds[key] = false
@@ -356,7 +357,7 @@ local Window = UI:CreateWindow({
 Window:AddDropdown({
 	Text = "Roll Type (Empty = All)",
 	Options = SpinTypes,
-	MultipleOptions = true,
+	Multi = true,
 	Flag = "roll_options",
 	Callback = function(option)
 		for _, mode in ipairs(SpinTypes) do
@@ -390,7 +391,7 @@ Window:AddDropdown({
 	Text = "Upgrade Type",
 	Options = UpgradeTypes,
 	Option = nil,
-	MultipleOptions = true,
+	Multi = true,
 	Flag = "upgrade_options",
 	Callback = function(option)
 		for _, mode in ipairs(UpgradeTypes) do
@@ -425,7 +426,7 @@ Window:AddButton({
 	Callback = HandleEquipBestTurret()
 })
 
-Window:AddLabel({
-	Text = "YouTube: Crokyreo",
-	TextColor3 = Color3.fromRGB(255, 255, 255)
-})
+Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
+Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
+Services.GuiService:SetGameplayPausedNotificationEnabled(false)
+Window:LoadConfig()
