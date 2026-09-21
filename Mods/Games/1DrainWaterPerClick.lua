@@ -1,6 +1,3 @@
--- This is what the script looks like from Tora IsMe.
--- This is a script I made myself. I DO NOT STEAL SCRIPT because i can't read script on Tora IsMe
-
 local UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Crokier/Roblox/main/Packages/Sampluy/init.luau"))()
 local Services = setmetatable({}, {__index = function(_, i) return cloneref and cloneref(game:GetService(i)) or game:GetService(i) end})
 local Players = Services.Players
@@ -252,7 +249,8 @@ end
 local Plot = GetPlot()
 
 local Window = UI:CreateWindow({
-	Name = "+1 Drain Water Per Click", 
+	Name = "+1 Drain Water Per Click",
+    ConfigInfo={Enabled=true,Path="Crokyreo/1DrainWaterPerClick/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
@@ -268,6 +266,7 @@ local Window = UI:CreateWindow({
 Interfaces.ClickToggle = Window:AddToggle({
 	Text = "Level Up",
 	Value = false,
+	Flag = "levelup_enabled",
 	Callback = function(value)
 		Enableds.Click = value
 		if not Enableds.Click then return end
@@ -290,6 +289,7 @@ Interfaces.ClickToggle = Window:AddToggle({
 Interfaces.RebirthToggle = Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
+	Flag = "rebirth_enabled",
 	Callback = function(value)
 		Enableds.Rebirth = value
 		if not Enableds.Rebirth then return end
@@ -319,6 +319,7 @@ Window:AddSlider({
 	Range = {1, ProfileData.MaxStage > 0 and ProfileData.MaxStage or 1},
 	Value = ProfileData.Checkpoint,
 	Increment = 1,
+	Flag = "stage",
 	Callback = function(value)
 		ProfileData.Checkpoint = value
 	end
@@ -327,6 +328,7 @@ Window:AddSlider({
 Window:AddToggle({
 	Text = "Auto Stage",
 	Value = false,
+	Flag = "stage_enabled",
 	Callback = function(value)
 		Enableds.Stage = value
 		if not Enableds.Stage then return end
@@ -433,6 +435,7 @@ Window:AddToggle({
 Interfaces.CashToggle = Window:AddToggle({
 	Text = "Collect Cash",
 	Value = false,
+	Flag = "cash_enabled",
 	Callback = function(value)
 		Enableds.Cash = value
 		if not Enableds.Cash then return end
@@ -476,6 +479,7 @@ Interfaces.CashToggle = Window:AddToggle({
 Interfaces.EquipToggle = Window:AddToggle({
 	Text = "Equip Best Fish",
 	Value = false,
+	Flag = "equip_fish_enabled",
 	Callback = function(value)
 		Enableds.Equip = value
 		if not Enableds.Equip then return end
@@ -499,6 +503,7 @@ Window:AddDropdown({
 	Options = #UpgradeTypes > 0 and UpgradeTypes or {"No Upgrade Type"},
 	Option = nil,
 	Multi = true,
+	Flag = "upgrade_options",
 	Callback = function(option)
 		for _, mode in ipairs(UpgradeTypes) do
 			UpgradeActives[mode] = table.find(option, mode) ~= nil
@@ -510,6 +515,7 @@ Window:AddDropdown({
 Window:AddToggle({
 	Text = "Auto Upgrade",
 	Value = false,
+	Flag = "upgrade_enabled",
 	Callback = function(value)
 		Enableds.Upgrade = value
 		if not Enableds.Upgrade then return end
@@ -572,6 +578,7 @@ Window:AddToggle({
 Interfaces.SellToggle = Window:AddToggle({
 	Text = "Auto Sell",
 	Value = false,
+	Flag = "sell_enabled",
 	Callback = function(value)
 		Enableds.Sell = value
 		if not Enableds.Sell then return end
@@ -593,8 +600,9 @@ Interfaces.SellToggle = Window:AddToggle({
 Interfaces.CodeDropdown = Window:AddDropdown({
 	Text = "Code List",
 	Options = #CodeTypes > 0 and CodeTypes or {"No Code"},
-	Option = nil,
+	Option = {},
 	Multi = true,
+	Flag = "code_options",
 	Callback = function(option) end
 })
 
@@ -611,7 +619,11 @@ Window:AddButton({
 	end
 })
 
-Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
-Window:AddLabel({ Text = "YouTube: Tora IsMe", TextColor3 = Color3.fromRGB(255, 255, 255) })
+Window:AddLinkButton({
+   Text="Donate 💖",
+   Link="https://link-target.net/6690566/TlR2vuR2JR4F",
+})
 
+Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
+Window:LoadConfig()
