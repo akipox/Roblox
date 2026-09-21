@@ -250,7 +250,7 @@ local Plot = GetPlot()
 
 local Window = UI:CreateWindow({
 	Name = "+1 Drain Water Per Click",
-    ConfigInfo={Enabled=true,Path="Crokyreo/1DrainWaterPerClick/configs.json"},
+    ConfigInfo = {Enabled=true,Path="Crokyreo/Target/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
@@ -619,11 +619,7 @@ Window:AddButton({
 	end
 })
 
-Window:AddLinkButton({
-   Text="Donate 💖",
-   Link="https://link-target.net/6690566/TlR2vuR2JR4F",
-})
-
-Window:AddLabel({ Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255) })
+Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
+Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
 Window:LoadConfig()
