@@ -92,7 +92,7 @@ end
 
 local Window = UI:CreateWindow({
 	Name = "+1 Hack Per Click",
-	ConfigInfo = {Enabled=true,Path="Crokyreo/Target/configs.json"},
+	ConfigInfo = {Enabled=true,Path="Crokyreo/1HackPerClick/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
