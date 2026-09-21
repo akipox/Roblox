@@ -256,7 +256,7 @@ end
 
 local Window=UI:CreateWindow({
 	Name="Build a +1 Obby", 
-	ConfigInfo={Enabled=true,Path="Crokyreo/Builda1Obby/settings.json"}),
+	ConfigInfo={Enabled=true,Path="Crokyreo/Builda1Obby/settings.json"},
 	Destroying=function()
 		for key,enabled in pairs(Enableds) do
 			Enableds[key]=false
@@ -466,6 +466,11 @@ Window:AddToggle({
 		    end
 	    end)
 	end
+})
+
+Window:AddLinkButton({
+   Text="Donate 💖",
+   Link="https://link-target.net/6690566/TlR2vuR2JR4F",
 })
 
 Window:AddLabel({
