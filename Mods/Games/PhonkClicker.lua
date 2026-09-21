@@ -26,9 +26,8 @@ local TypeData = {
 }
 
 local ActiveData = {
-	["Upgrade"] = {
-		["AllEnabled"] = true
-	}
+	["Upgrade"] = {["AllEnabled"] = true},
+	["Code"] = {}
 }
 
 local InfoData = {
@@ -126,6 +125,7 @@ end
 
 local Window = UI:CreateWindow({
 	Name = "Phonk Clicker",
+	ConfigInfo = {Enabled=true,Path="Crokyreo/PhonkClicker/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
@@ -136,6 +136,7 @@ local Window = UI:CreateWindow({
 Window:AddToggle({
 	Text = "Auto Click",
 	Value = false,
+	Flag = "click_enabled",
 	Callback = function(value)
 		Enableds.Click = value
 		if not Enableds.Click then return end
@@ -156,7 +157,8 @@ Window:AddDropdown({
 	Text = "Upgrade Type (Empty = All)",
 	Options = #TypeData.Upgrade > 0 and TypeData.Upgrade or {"No Upgrade Type"},
 	Option = nil,
-	MultipleOptions = true,
+	Multi = true,
+	Flag = "upgrade_options",
 	Callback = function(option)
 		for _, mode in ipairs(TypeData.Upgrade) do
 			ActiveData.Upgrade[mode] = table.find(option, mode) ~= nil
@@ -168,6 +170,7 @@ Window:AddDropdown({
 Window:AddToggle({
 	Text = "Auto Upgrade",
 	Value = false,
+	Flag = "upgrade_enabled",
 	Callback = function(value)
 		Enableds.Upgrade = value
 		if not Enableds.Upgrade then return end
@@ -194,6 +197,7 @@ Window:AddToggle({
 Window:AddToggle({
 	Text = "Open Lucky Block",
 	Value = false,
+	Flag = "open_lucky_block",
 	Callback = function(value)
 		Enableds.LuckyBlock = value
 		if not Enableds.LuckyBlock then Values.LuckyBlockDebounce = false return end
@@ -226,6 +230,7 @@ Interfaces.CodeDropdown = Window:AddDropdown({
 	Options = {"No Code"},
 	Option = nil,
 	Multi = true,
+	Flag = "rebirth_enabled",
 	Callback = function() end
 })
 
@@ -234,10 +239,12 @@ Window:AddButton({
 	MethodType = "DebounceClick",
 	Callback = function()
 		Modules.CodeData = Modules.CodeData or require(ReplicatedStorage:QueryDescendants("#Modules > #CodesConfig")[1]:Clone())
-		table.clear(TypeData.Code)
 		for code, info in pairs(Modules.CodeData.Codes) do
 			Packets.RedeemCode:InvokeServer(code)
-			table.insert(TypeData.Code, code)
+			if ActiveData.Code[code]==nil then
+				ActiveData.Code[code]=false
+				table.insert(TypeData.Code, code)
+			end
 		end
 		Interfaces.CodeDropdown.Options = TypeData.Code
 		Interfaces.CodeDropdown:Refresh()
@@ -247,6 +254,7 @@ Window:AddButton({
 Window:AddToggle({
 	Text = "Auto Rebirth",
 	Value = false,
+	Flag = "rebirth_enabled",
 	Callback = function(value)
 		Enableds.Rebirth = value
 		if not Enableds.Rebirth then Values.RebirthDebounce = false return end
@@ -277,7 +285,7 @@ Window:AddToggle({
 	end
 })
 
-Window:AddLabel({
-	Text = "YouTube: Crokyreo",
-	TextColor3 = Color3.fromRGB(255, 255, 255)
-})
+Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
+Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
+Services.GuiService:SetGameplayPausedNotificationEnabled(false)
+Window:LoadConfig()
