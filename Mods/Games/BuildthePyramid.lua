@@ -28,7 +28,7 @@ local Interfaces = {}
 
 local function updateCodes(option, isList)
    local changed = false
-   for v1,v2 in ipairs(option) do
+   for v1,v2 in pairs(option) do
 	    local code = isList and v2 or v1
 	    if ActiveData.Code[code]==nil then
 			ActiveData.Code[code]=false
@@ -36,13 +36,18 @@ local function updateCodes(option, isList)
 		    changed = true 
 		end
 	end
+	if changed then
+		Interfaces.CodeDropdown.Options = TypeData.Code
+		Interfaces.CodeDropdown.Option = TypeData.Code
+		Interfaces.CodeDropdown:Refresh()
+	end
 	return TypeData.Code
 end
 
 local Window = UI:CreateWindow({
 	Name = "Build the Pyramida",
 	ConfigInfo = {Enabled=true,Path="Crokyreo/BuildthePyramida/configs.json"},
-	Destroying = function() end
+	Destroying = function(option)  updateCodes(option, true) end
 })
 
 Interfaces.CodeDropdown = Window:AddDropdown({
@@ -52,8 +57,7 @@ Interfaces.CodeDropdown = Window:AddDropdown({
 	Multi = true,
 	Flag = "code_options",
 	Callback = function(option)
-		
-		
+		updateCodes(option, true)
 	end
 })
 
@@ -62,20 +66,10 @@ Window:AddButton({
 	MethodType = "DebounceClick",
 	Callback = function()
 		Modules.CodeData = Modules.CodeData or require(ReplicatedStorage:QueryDescendants("#Shared > #Config > #CodesConfig")[1]:Clone())
-		local changed = false
-		for code, info in pairs(Modules.CodeData.Codes) do
+		local list = updateCodes(Modules.CodeData.Codes, false)
+		for code, info in pairs(list) do
 			Packets.RedeemCode:InvokeServer(code)
-			if ActiveData.Code[code]==nil then
-				ActiveData.Code[code]=false
-				table.insert(TypeData.Code, code)
-				changed = true
-			end
 			task.wait()
-		end
-		Interfaces.CodeDropdown.Options = TypeData.Code
-		Interfaces.CodeDropdown:Refresh()
-		if changed then
-			Interfaces.CodeDropdown:Set(TypeData.Code)
 		end
 	end
 })
