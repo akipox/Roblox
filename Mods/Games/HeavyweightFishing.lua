@@ -113,7 +113,6 @@ local function HandleCode()
 	task.spawn(function()
 		while Enableds.Code do
 			local changed = false
-				
 			for _, playerFolder in ipairs(PlayerDataFolder:GetChildren()) do
 				if not Enableds.Code then break end
 				if not (playerFolder and playerFolder.Parent) then continue end
@@ -133,13 +132,12 @@ local function HandleCode()
 					end
 					task.wait()
 				end
-				if changed then
-					CodeDropdown.Options = CodeTypes
-					CodeDropdown.Option = CodeTypes
-	                CodeDropdown:Refresh()
-				end
 			end
-			
+			if changed then
+				CodeDropdown.Options = CodeTypes
+				CodeDropdown.Option = CodeTypes
+	            CodeDropdown:Refresh()
+			end
 			task.wait(30)
 		end
 	end)
