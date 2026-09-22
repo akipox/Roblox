@@ -26,6 +26,19 @@ local Packets = {
 
 local Interfaces = {}
 
+local function updateCodes(option, isList)
+   local changed = false
+   for v1,v2 in ipairs(option) do
+	    local code = isList and v2 or v1
+	    if ActiveData.Code[code]==nil then
+			ActiveData.Code[code]=false
+			table.insert(TypeData.Code, code)
+		    changed = true 
+		end
+	end
+	return TypeData.Code
+end
+
 local Window = UI:CreateWindow({
 	Name = "Build the Pyramida",
 	ConfigInfo = {Enabled=true,Path="Crokyreo/BuildthePyramida/configs.json"},
@@ -38,7 +51,10 @@ Interfaces.CodeDropdown = Window:AddDropdown({
 	Option = nil,
 	Multi = true,
 	Flag = "code_options",
-	Callback = function() end
+	Callback = function(option)
+		
+		
+	end
 })
 
 Window:AddButton({
