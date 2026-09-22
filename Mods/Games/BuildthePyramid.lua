@@ -26,10 +26,11 @@ local Packets = {
 
 local Interfaces = {}
 
-local function updateCodes(option, isList)
+local function updateCodes(option, isList, func)
    local changed = false
    for v1,v2 in pairs(option) do
 	    local code = isList and v2 or v1
+		Packets.RedeemCode:InvokeServer(code)
 	    if ActiveData.Code[code]==nil then
 			ActiveData.Code[code]=false
 			table.insert(TypeData.Code, code)
@@ -47,7 +48,7 @@ end
 local Window = UI:CreateWindow({
 	Name = "Build the Pyramida",
 	ConfigInfo = {Enabled=true,Path="Crokyreo/BuildthePyramida/configs.json"},
-	Destroying = function(option)  updateCodes(option, true) end
+	Destroying = function() end
 })
 
 Interfaces.CodeDropdown = Window:AddDropdown({
@@ -66,11 +67,7 @@ Window:AddButton({
 	MethodType = "DebounceClick",
 	Callback = function()
 		Modules.CodeData = Modules.CodeData or require(ReplicatedStorage:QueryDescendants("#Shared > #Config > #CodesConfig")[1]:Clone())
-		local list = updateCodes(Modules.CodeData.Codes, false)
-		for code, info in pairs(list) do
-			Packets.RedeemCode:InvokeServer(code)
-			task.wait()
-		end
+		updateCodes(Modules.CodeData.Codes, false)
 	end
 })
 
