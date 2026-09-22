@@ -42,21 +42,6 @@ local function FireButton(button)
 	end
 end
 
-local function HandleQuest()
-	if not Enableds.Quest then return end
-
-	task.spawn(function()
-		while Enableds.Quest do
-			for i = 1, MaxDailyQuest do
-				if not Enableds.Quest then break end
-				Packets.ClaimQuest:FireServer(tostring(i))
-				task.wait(0.1)
-			end
-			task.wait(1)
-		end
-	end)
-end
-
 local function IsCursorPerfect(cursor)
 	local currentX=cursor.Position.X.Scale
 	if currentX>=0.4 and currentX<=0.6 then
@@ -237,7 +222,17 @@ Window:AddToggle({
 	Flag = "quest_enabled",
 	Callback = function(value)
 		Enableds.Quest = value
-		HandleQuest()
+		if not Enableds.Quest then return end
+	    task.spawn(function()
+		    while Enableds.Quest do
+			    for i = 1, MaxDailyQuest do
+				   if not Enableds.Quest then break end
+			       Packets.ClaimQuest:FireServer(tostring(i))
+				   task.wait()
+			    end
+			    task.wait(3)
+		    end
+	    end)
 	end
 })
 
