@@ -25,7 +25,7 @@ end)
 
 local CodeDropdown = nil
 local FishingThread = nil
-local CodeCache, CodeTypes = {}, {}
+local CodeActives, CodeTypes = {}, {}
 
 local function FireTouch(hitPart, targetPart)
 	if firetouchinterest and hitPart and targetPart then
@@ -108,11 +108,30 @@ local function HandleFishing()
 	end)
 end
 
+local function updateCodes(option, isList)
+   local changed = false
+   for v1,v2 in pairs(option) do
+	    local code = isList and v2 or v1
+		Packets.RedeemCode:InvokeServer(code)
+	    if ActiveData.Code[code]==nil then
+			ActiveData.Code[code]=false
+			table.insert(TypeData.Code, code)
+		    changed = true 
+		end
+	end
+	if changed then
+		Interfaces.CodeDropdown.Options = TypeData.Code
+		Interfaces.CodeDropdown.Option = TypeData.Code
+		Interfaces.CodeDropdown:Refresh()
+	end
+	return TypeData.Code
+end
+
 local function HandleCode()
 	if not Enableds.Code then return end
 	task.spawn(function()
 		while Enableds.Code do
-			local isNewCode = false
+			local changed = false
 				
 			for _, playerFolder in ipairs(PlayerDataFolder:GetChildren()) do
 				if not Enableds.Code then break end
@@ -123,19 +142,23 @@ local function HandleCode()
 				
 				for _, codeValue in ipairs(codesFolder:GetChildren()) do
 					if not Enableds.Code then break end
-					if not (codeValue and codeValue.Parent) then continue end
-					local codeName = codeValue.Name
-					if CodeCache[codeName] then continue end
-					CodeCache[codeName] = true
-					isNewCode = true 
+					if (codeValue and codeValue.Parent) then
+						local codeName = codeValue.Name
+					    if CodeActives[codeName] == nil then
+							
+						end
+					    CodeActives[codeName] = true
+					    table.insert(CodeTypes, codeName)
+				    	changed = true 
+					end
+					
 				end
 			end
 			
 			if not Enableds.Code then break end
 
-			if isNewCode then
-				table.clear(CodeTypes)
-			    for code, _ in pairs(CodeCache) do
+			if changed then
+			    for code, _ in pairs() do
 					table.insert(CodeTypes, code)
 				end
 				CodeDropdown.Options = CodeTypes
@@ -166,6 +189,7 @@ end
 
 local Window = UI:CreateWindow({
 	Name = "Heavyweight Fishing",
+	ConfigInfo = {Enabled=true,Path="Crokyreo/HeavyweightFishing/configs.json"},
 	Destroying = function()
 		for key, enabled in pairs(Enableds) do
 			Enableds[key] = false
@@ -223,6 +247,7 @@ CodeDropdown = Window:AddDropdown({
 Window:AddToggle({
 	Text = "Claim Code",
 	Value = false,
+	
 	Callback = function(value)
 		Enableds.Code = value
 		HandleCode()
@@ -232,6 +257,7 @@ Window:AddToggle({
 Window:AddToggle({
 	Text = "Claim Quest",
 	Value = false,
+	Flag = "quest_enabled",
 	Callback = function(value)
 		Enableds.Quest = value
 		HandleQuest()
@@ -243,9 +269,7 @@ Window:AddLabel({
 	TextColor3 = Color3.fromRGB(255, 255, 255)
 })
 
-Window:AddLabel({
-	Text = "Date: 08-03-2026",
-	TextColor3 = Color3.fromRGB(255, 255, 255)
-})
-
+Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
+Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
 Services.GuiService:SetGameplayPausedNotificationEnabled(false)
+Window:LoadConfig()
