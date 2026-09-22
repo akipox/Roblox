@@ -108,52 +108,6 @@ local function HandleFishing()
 	end)
 end
 
-local function HandleCode()
-	if not Enableds.Code then return end
-	task.spawn(function()
-		while Enableds.Code do
-			local changed = false
-			for _, playerFolder in ipairs(PlayerDataFolder:GetChildren()) do
-				if not Enableds.Code then break end
-				if not (playerFolder and playerFolder.Parent) then continue end
-				
-				local codesFolder = playerFolder:FindFirstChild("Code")
-				if not codesFolder then continue end
-				for _, codeValue in ipairs(codesFolder:GetChildren()) do
-					if not Enableds.Code then break end
-					if (codeValue and codeValue.Parent) then
-						local code = codeValue.Name
-						Packets.RedeemCode:FireServer(code)
-					    if CodeActives[code] == nil then
-							CodeActives[code] = false
-					        table.insert(CodeTypes, code)
-							changed = true
-						end
-					end
-					task.wait()
-				end
-			end
-			if changed then
-				CodeDropdown.Options = CodeTypes
-				CodeDropdown.Option = CodeTypes
-	            CodeDropdown:Refresh()
-			end
-			task.wait(30)
-		end
-	end)
-end
-
-local function HandleSell()
-	if not Enableds.Sell then return end
-
-	task.spawn(function()
-		while Enableds.Sell do
-			Packets.SellFish:FireServer("All")
-			task.wait(1)
-		end
-	end)
-end
-
 local Window = UI:CreateWindow({
 	Name = "Heavyweight Fishing",
 	ConfigInfo = {Enabled=true,Path="Crokyreo/HeavyweightFishing/configs.json"},
@@ -201,7 +155,13 @@ Window:AddToggle({
 	Flag = "sell_enabled",
 	Callback = function(value)
 		Enableds.Sell = value
-		HandleSell()
+		if not Enableds.Sell then return end
+	    task.spawn(function()
+		   while Enableds.Sell do
+			  Packets.SellFish:FireServer("All")
+			  task.wait(1)
+		   end
+	   end)
 	end
 })
 
@@ -229,12 +189,45 @@ CodeDropdown = Window:AddDropdown({
 })
 
 Window:AddToggle({
-	Text = "Claim Code",
+	Text = "Redeem Code",
 	Value = false,
 	Flag = "code_enabled",
 	Callback = function(value)
 		Enableds.Code = value
-		HandleCode()
+		if not Enableds.Code then return end
+    	task.spawn(function()
+		   while Enableds.Code do
+			    local changed = false
+			    for _, playerFolder in ipairs(PlayerDataFolder:GetChildren()) do
+				  if not Enableds.Code then break end
+				  if not (playerFolder and playerFolder.Parent) then continue end
+				  local codesFolder = playerFolder:FindFirstChild("Code")
+				  if not codesFolder then continue end
+			      for _, codeValue in ipairs(codesFolder:GetChildren()) do
+				      if not Enableds.Code then break end
+					  if (codeValue and codeValue.Parent) then
+						  local code = codeValue.Name
+					      if CodeActives[code] == nil then
+							  CodeActives[code] = false
+					          table.insert(CodeTypes, code)
+							  changed = true
+						  end
+					  end
+					  task.wait()
+				  end
+			   end
+			   for _, code in ipairs(CodeTypes) do
+				  Packets.RedeemCode:FireServer(code)
+				  task.wait()
+			   end
+			   if changed then
+				  CodeDropdown.Options = CodeTypes
+				  CodeDropdown.Option = CodeTypes
+	              CodeDropdown:Refresh()
+			   end
+			   task.wait(30)
+		    end
+	    end)
 	end
 })
 
