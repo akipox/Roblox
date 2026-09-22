@@ -108,25 +108,6 @@ local function HandleFishing()
 	end)
 end
 
-local function updateCodes(option, isList)
-   local changed = false
-   for v1,v2 in pairs(option) do
-	    local code = isList and v2 or v1
-		Packets.RedeemCode:InvokeServer(code)
-	    if ActiveData.Code[code]==nil then
-			ActiveData.Code[code]=false
-			table.insert(TypeData.Code, code)
-		    changed = true 
-		end
-	end
-	if changed then
-		Interfaces.CodeDropdown.Options = TypeData.Code
-		Interfaces.CodeDropdown.Option = TypeData.Code
-		Interfaces.CodeDropdown:Refresh()
-	end
-	return TypeData.Code
-end
-
 local function HandleCode()
 	if not Enableds.Code then return end
 	task.spawn(function()
@@ -139,38 +120,26 @@ local function HandleCode()
 				
 				local codesFolder = playerFolder:FindFirstChild("Code")
 				if not codesFolder then continue end
-				
 				for _, codeValue in ipairs(codesFolder:GetChildren()) do
 					if not Enableds.Code then break end
 					if (codeValue and codeValue.Parent) then
-						local codeName = codeValue.Name
-					    if CodeActives[codeName] == nil then
-							
+						local code = codeValue.Name
+						Packets.RedeemCode:FireServer(code)
+					    if CodeActives[code] == nil then
+							CodeActives[code] = false
+					        table.insert(CodeTypes, code)
+							changed = true
 						end
-					    CodeActives[codeName] = true
-					    table.insert(CodeTypes, codeName)
-				    	changed = true 
 					end
-					
+					task.wait()
+				end
+				if changed then
+					CodeDropdown.Options = CodeTypes
+					CodeDropdown.Option = CodeTypes
+	                CodeDropdown:Refresh()
 				end
 			end
 			
-			if not Enableds.Code then break end
-
-			if changed then
-			    for code, _ in pairs() do
-					table.insert(CodeTypes, code)
-				end
-				CodeDropdown.Options = CodeTypes
-	            CodeDropdown:Refresh()
-			end
-				
-			for code, _ in pairs(CodeCache) do
-				if not Enableds.Code then break end
-				Packets.RedeemCode:FireServer(code)
-				task.wait(0.1)
-			end
-				
 			task.wait(30)
 		end
 	end)
@@ -210,6 +179,7 @@ local Window = UI:CreateWindow({
 Window:AddToggle({
 	Text = "Auto Fishing (Patched)",
 	Value = false,
+	Flag = "fishing_enabled",
 	Callback = function(value)
 		Enableds.Fishing = value
 		HandleFishing()
@@ -230,6 +200,7 @@ Window:AddButton({
 Window:AddToggle({
 	Text = "Auto Sell",
 	Value = false,
+	Flag = "sell_enabled",
 	Callback = function(value)
 		Enableds.Sell = value
 		HandleSell()
@@ -241,13 +212,28 @@ CodeDropdown = Window:AddDropdown({
 	Options = {"No Code"},
 	Option = nil,
 	Multi = true,
-	Callback = function() end
+	Flag = "code_options",
+	Callback = function(option)
+		local changed = false
+		for _, code in ipairs(option) do
+            if CodeActives[code] == nil then
+				CodeActives[code] = false
+				table.insert(CodeTypes, code)
+				changed = true
+			end
+		end
+	    if changed then
+			CodeDropdown.Options = CodeTypes
+			CodeDropdown.Option = CodeTypes
+	        CodeDropdown:Refresh()
+	    end
+	end
 })
 
 Window:AddToggle({
 	Text = "Claim Code",
 	Value = false,
-	
+	Flag = "code_enabled",
 	Callback = function(value)
 		Enableds.Code = value
 		HandleCode()
