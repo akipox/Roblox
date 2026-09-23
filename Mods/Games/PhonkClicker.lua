@@ -10,8 +10,9 @@ local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
-local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Rebirth"] = false}
+local Connections = {}
 local Modules = {}
+local Enableds = {["Click"] = false, ["Upgrade"] = false, ["Rebirth"] = false}
 local Values = {
 	["ClickPoint"] = Vector2.new(500, 500),
 	["RebirthDebounce"] = false,
@@ -93,7 +94,7 @@ if Interfaces.UpgradeScroll then
 	table.sort(sortUpgrades, function(a, b)
 		return a.Tier > b.Tier
 	end)
-	
+
 	for _, info in ipairs(sortUpgrades) do
 		table.insert(InfoData.Upgrade, info)
 	end
@@ -133,6 +134,8 @@ local Window = UI:CreateWindow({
 	end
 })
 
+Window:BuildSettingsFeature({Link = "https://raw.githubusercontent.com/akipox/Roblox/main/Mods/Games/PhonkClicker.lua"})
+
 Window:AddToggle({
 	Text = "Auto Click",
 	Value = false,
@@ -154,7 +157,7 @@ Window:AddToggle({
 })
 
 Window:AddDropdown({
-	Text = "Upgrade Type (Empty = All)",
+	Text = "Upgrade Type",
 	Options = #TypeData.Upgrade > 0 and TypeData.Upgrade or {"No Upgrade Type"},
 	Option = nil,
 	Multi = true,
@@ -217,7 +220,7 @@ Window:AddToggle({
 						end
 						Values.LuckyBlockDebounce = false
 					end
-					
+
 				end
 				task.wait()
 			end
@@ -277,7 +280,7 @@ Window:AddToggle({
 						end
 						Values.RebirthDebounce = false
 					end
-					
+
 				end
 				task.wait()
 			end
@@ -287,5 +290,4 @@ Window:AddToggle({
 
 Window:AddLinkButton({Text = "Donate 💖", Link = "https://link-target.net/6690566/TlR2vuR2JR4F"})
 Window:AddLabel({Text = "YouTube: Crokyreo", TextColor3 = Color3.fromRGB(255, 255, 255)})
-Services.GuiService:SetGameplayPausedNotificationEnabled(false)
 Window:LoadConfig()
