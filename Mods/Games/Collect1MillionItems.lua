@@ -79,7 +79,7 @@ Interfaces.UpgradeToggle = Window:AddToggle({
 })
 
 Interfaces.ClaimIndexToggle = Window:AddToggle({
-	Text = "Auto Upgrade",
+	Text = "Claim Index",
 	Value = false,
 	Flag = "claim_index_enabled",
 	Callback = function(value)
