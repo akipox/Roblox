@@ -1,30 +1,52 @@
 local FileName = "NameFileHere"
-local Cntainer = script:QueryDescendants("")
+local Container = game:GetService("StarterGui")
 
+local RunService=cloneref and cloneref(game:GetService("RunService")) or game:GetService("RunService")
 
+local Children = Container:GetChildren()
+local Lines = {}
 
-local RunService = game:GetService("RunService")
-local Lines = Cntainer:GetChildren()
-
-table.sort(Lines, function(a, b)
-	if a:IsA("GuiObject") and b:IsA("GuiObject") then
-		return a.Position.Y.Offset < b.Position.Y.Offset
+print("[" .. FileName .. "] Starting")
+for i, line in ipairs(Children) do
+	if line:IsA("GuiObject") then
+		local label = nil
+		for _, layer in ipairs(line:GetChildren()) do 
+			if layer:IsA("TextLabel") and layer.Name=="Label" then 
+				label = layer 
+				break 
+			end 
+		end
+		RunService.Stepped:Wait()
+		if label then
+			table.insert(Lines, {
+				Tier = line.Position.Y.Offset,
+				Text = label.Text
+			})
+		end
 	end
-	return false
-end)
-
-local step, rngStep = 0, math.random(30,50)
-local s = ""
-
-for i, line in ipairs(Lines) do
-	local label = nil
-	for _, child in ipairs(line:GetChildren()) do if child:IsA("TextLabel") and child.Name=="Label" then label = child break end end
-	if label then
-		s = s .. label.Text .. "\n"
-		step=(step+1)%rngStep
-		if step==0 then rngStep=math.random(30,50) print("[" .. FileName .. "] Still copy text step:",step) end
-	end
-	RunService.RenderStepped:Wait()
 end
 
-writefile("Instal/".. FileName, s)
+print("[" .. FileName .. "] Sorting")
+table.clear(Children)
+table.sort(Lines, function(a, b)
+	return a.Tier < b.Tier
+end)
+
+print("[" .. FileName .. "] Creating")
+local step = 0
+local s = ""
+for i, line in ipairs(Lines) do
+	s = s .. line.Text .. "\n"
+	step=step+1
+	if i%30==0 then print("[" .. FileName .. "] Still copy text step:", step) end
+	RunService.Stepped:Wait()
+end
+
+if writefile then
+	writefile("Instal/".. FileName, s)
+	print("[" .. FileName .. "] Successfully copied to file!")
+else
+	print("[" .. FileName .. "] Failed copy to file because writefile function is missing")
+end
+table.clear(Lines)
+
